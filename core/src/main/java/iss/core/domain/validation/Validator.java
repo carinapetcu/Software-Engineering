@@ -1,4 +1,8 @@
 package iss.core.domain.validation;
 
-public interface Validator {
+import iss.core.domain.BaseEntity;
+import iss.core.exceptions.ValidationException;
+
+public interface Validator <T extends BaseEntity<?>> {
+    void validate(T entity) throws ValidationException;
 }
