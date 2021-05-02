@@ -1,11 +1,12 @@
 package group2.cms.domain;
 
 public enum Authority {
-    Listener(0),
-    Author(1),
-    PCMember(2),
-    Chair(3),
-    CoChair(3);
+    Default(0),
+    Listener(1),
+    Author(2),
+    PCMember(3),
+    Chair(4),
+    CoChair(4);
 
     private final int authorityLevel;
 
