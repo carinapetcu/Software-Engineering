@@ -1,24 +1,12 @@
 package group2.cms.domain;
 
 public enum Authority {
-    Default(0),
-    Listener(1),
-    Author(2),
-    PCMember(3),
-    Chair(4),
-    CoChair(4);
-
-    private final int authorityLevel;
-
-    Authority(int authorityLevel) {
-        this.authorityLevel = authorityLevel;
-    }
-
-
-    public int getAuthorityLevel() {
-        return authorityLevel;
-    }
-
+    Default,
+    Listener,
+    Author,
+    PCMember,
+    CoChair,
+    Chair;
 
     /**
      *
@@ -26,6 +14,6 @@ public enum Authority {
      * @return - true if authority given is <= the authority from which the compare function is called
      */
     public boolean compareAuthority(Authority authority){
-        return this.authorityLevel >= authority.getAuthorityLevel();
+        return this.compareTo(authority) > 0;
     }
 }

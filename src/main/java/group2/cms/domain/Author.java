@@ -13,5 +13,18 @@ import javax.persistence.ManyToOne;
 //@ToString(callSuper = true)
 public class Author extends CMSUser{
     @ManyToOne
-    private Paper paper;
+    protected Paper paper;
+
+    public Author() {
+    }
+
+    public Author(CMSUser paperUploader, Paper uploadedPaper) {
+        super(paperUploader.getId(),
+                paperUploader.getFullName(),
+                paperUploader.getEmail(),
+                paperUploader.getUsername(),
+                paperUploader.getPassword());
+        this.authority = Authority.Author;
+        this.paper = uploadedPaper;
+    }
 }

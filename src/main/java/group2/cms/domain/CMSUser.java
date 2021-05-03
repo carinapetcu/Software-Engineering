@@ -14,11 +14,19 @@ import javax.persistence.InheritanceType;
 @EqualsAndHashCode(callSuper = true)
 //@ToString(callSuper = true)
 public class CMSUser extends BaseEntity<Long>{
-    private String fullName;
-    private String email;
-    private String username;
-    private String password;
-    private Integer authority;
+    protected String fullName;
+    protected String email;
+    protected String username;
+    protected String password;
+    protected Authority authority = Authority.Default;
 
+    public CMSUser(){}
 
+    public CMSUser(Long id, String fullName, String email, String username, String password) {
+        super(id);
+        this.fullName = fullName;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+    }
 }
