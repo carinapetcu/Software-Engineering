@@ -22,8 +22,7 @@ public class CMSUser extends BaseEntity<Long>{
 
     public CMSUser(){}
 
-    public CMSUser(Long id, String fullName, String email, String username, String password) {
-        super(id);
+    public CMSUser(String fullName, String email, String username, String password) {
         this.fullName = fullName;
         this.email = email;
         this.username = username;

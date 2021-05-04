@@ -19,12 +19,19 @@ public class Author extends CMSUser{
     }
 
     public Author(CMSUser paperUploader, Paper uploadedPaper) {
-        super(paperUploader.getId(),
-                paperUploader.getFullName(),
+        super(paperUploader.getFullName(),
                 paperUploader.getEmail(),
                 paperUploader.getUsername(),
                 paperUploader.getPassword());
         this.authority = Authority.Author;
         this.paper = uploadedPaper;
+    }
+
+    public Author(CMSUser user){
+        super(user.getFullName(),
+                user.getEmail(),
+                user.getUsername(),
+                user.getPassword());
+        this.authority = Authority.Author;
     }
 }

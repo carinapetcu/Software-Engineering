@@ -17,12 +17,7 @@ public abstract class BaseEntity<ID extends Serializable>implements Serializable
     @GeneratedValue
     protected ID id;
 
-    public BaseEntity(ID id) {
-        this.id = id;
-    }
-
     public BaseEntity(){
-        id=null;
     }
 
     public ID getId(){return this.id;}
