@@ -4,6 +4,9 @@ import group2.cms.domain.PCMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface PCMemberRepository extends JpaRepository<PCMember,Long> {
+    List<PCMember> findAllByAffiliation(String affiliation);
 }

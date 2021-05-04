@@ -72,7 +72,7 @@ public class AuthorController {
                     HttpStatus.BAD_REQUEST
             );
         }
-       
+
     }
 
     @GetMapping("authors/{authorID}")
