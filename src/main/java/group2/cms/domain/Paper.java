@@ -5,24 +5,36 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-//@NoArgsConstructor
-//@AllArgsConstructor
+@NoArgsConstructor
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
+@Table(
+        uniqueConstraints = @UniqueConstraint(columnNames = {"title"})
+)
 //@ToString
-public class Paper{
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Paper extends BaseEntity<Long>{
+
 
     private String title;
+
     private String paperAbstract;
     @ManyToMany
-    @JoinTable(name = "paperAuthors", joinColumns = @JoinColumn(name = "authorId",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "paperId",referencedColumnName = "id"))
+    @JoinTable(name = "paperAuthors", joinColumns = @JoinColumn(name = "authorId", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "paperId", referencedColumnName = "id"))
     private List<Author> authorList;
 
-    //private List<String> keywords; TODO: investigate how to store keywords
+    @ManyToMany(targetEntity = Keyword.class)
+    private Set<Keyword> keywordSet;
+
+    public Paper(String title, String paperAbstract, List<Author> authorList, Set<Keyword> keywordSet) {
+        this.title = title;
+        this.paperAbstract = paperAbstract;
+        this.authorList = authorList;
+        this.keywordSet = keywordSet;
+    }
+
+//private List<String> keywords; TODO: investigate how to store keywords
 }
