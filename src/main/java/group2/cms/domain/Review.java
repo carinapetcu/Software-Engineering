@@ -7,8 +7,8 @@ import java.io.File;
 
 @Entity
 @Data
-//@NoArgsConstructor
-//@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 //@ToString
 @EqualsAndHashCode
 public class Review {
