@@ -1,33 +1,24 @@
-package group2.cms.domain;
+package group2.cms.controller.Request;
 
+import group2.cms.domain.Paper;
+import group2.cms.domain.Section;
 import lombok.*;
 
-import javax.persistence.*;
 import java.io.File;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-@Entity
+
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@NoArgsConstructor
 @EqualsAndHashCode
-public class Presentation {
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @ManyToOne
-    @PrimaryKeyJoinColumn
+@ToString
+public class PresentationRequest implements Serializable {
+    private Long presentationID;
     private Paper paper;
-
-    @ManyToOne
-    @PrimaryKeyJoinColumn
     private Section section;
-
     private LocalDate startDate;
     private LocalDate endDate;
-
     private File presentation;
 }
