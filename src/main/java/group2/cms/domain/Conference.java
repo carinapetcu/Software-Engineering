@@ -11,10 +11,10 @@ import java.util.List;
 
 @Entity
 @Data
-//@NoArgsConstructor
-//@AllArgsConstructor
+@NoArgsConstructor
+// @AllArgsConstructor
 @EqualsAndHashCode
-//@ToString
+// @ToString
 public class Conference {
 
     @Id
