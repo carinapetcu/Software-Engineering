@@ -8,4 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PCMemberRepository extends JpaRepository<PCMember,Long> {
+    List<PCMember> findAllByAffiliation(String affiliation);
 }

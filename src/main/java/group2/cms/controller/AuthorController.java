@@ -2,16 +2,12 @@ package group2.cms.controller;
 
 
 import group2.cms.controller.Request.AuthorRequest;
-import group2.cms.domain.Author;
 import group2.cms.exceptions.BackendException;
 import group2.cms.service.AuthorService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class AuthorController {
@@ -72,7 +68,7 @@ public class AuthorController {
                     HttpStatus.BAD_REQUEST
             );
         }
-       
+
     }
 
     @GetMapping("authors/{authorID}")
