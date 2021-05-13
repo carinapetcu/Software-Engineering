@@ -26,7 +26,7 @@ public class CMSUserService {
                 userRepository.existsByEmail(email) ? "Email address" + email + "already in use.\n" : ""
         );
 
-        if (!errorMessageBuilder.isEmpty())
+        if (errorMessageBuilder.length() != 0)
             throw new CredentialsAlreadyInUseException(errorMessageBuilder.toString());
 
     }

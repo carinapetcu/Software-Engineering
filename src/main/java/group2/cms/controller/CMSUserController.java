@@ -35,6 +35,7 @@ public class CMSUserController {
     @PostMapping("users/update")
     public ResponseEntity<?> updateUser(@RequestBody CMSUserRequest request) {
         try {
+            var id = request.getId();
             var fullName = request.getFullName();
             var email = request.getEmail();
             var username = request.getUsername();
@@ -42,6 +43,7 @@ public class CMSUserController {
 
             return new ResponseEntity<>(
                     users.updateUser(
+                            id,
                             fullName.isBlank() ? Optional.empty() : Optional.of(fullName),
                             email.isBlank() ? Optional.empty() : Optional.of(email),
                             username.isBlank()? Optional.empty() : Optional.of(username),
