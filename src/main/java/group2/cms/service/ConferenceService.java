@@ -4,10 +4,12 @@ import group2.cms.domain.Conference;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.repository.ConferenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class ConferenceService {
     @Autowired
     private ConferenceRepository repository;
@@ -42,7 +44,7 @@ public class ConferenceService {
         return repository.getOne(id);
     }
 
-    public List<Conference> getAll(Long id) {
+    public List<Conference> getAll() {
         return repository.findAll();
     }
 }
