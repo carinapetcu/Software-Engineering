@@ -1,7 +1,5 @@
 package group2.cms.domain;
 
-import jdk.jfr.Enabled;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,6 +18,9 @@ public abstract class BaseEntity<ID extends Serializable>implements Serializable
     public BaseEntity(){
     }
 
+    public void setId(ID newId){
+        this.id = newId;
+    }
     public ID getId(){return this.id;}
 
     @Override
