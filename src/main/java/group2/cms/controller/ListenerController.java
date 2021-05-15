@@ -1,6 +1,6 @@
 package group2.cms.controller;
 
-import group2.cms.controller.Request.ListenerRequest;
+import group2.cms.service.DTO.ListenerRequest;
 import group2.cms.exceptions.BackendException;
 import group2.cms.service.ListenerService;
 import org.springframework.beans.factory.annotation.Autowired;

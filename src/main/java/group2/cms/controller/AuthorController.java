@@ -1,7 +1,7 @@
 package group2.cms.controller;
 
 
-import group2.cms.controller.Request.AuthorRequest;
+import group2.cms.service.DTO.Author.AuthorDTO;
 import group2.cms.exceptions.BackendException;
 import group2.cms.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class AuthorController {
     private AuthorService authors;
 
     @PostMapping("authors/add")
-    public ResponseEntity<?> addAuthor(@RequestBody AuthorRequest authorRequest){
+    public ResponseEntity<?> addAuthor(@RequestBody AuthorDTO authorRequest){
         try{
             var addedAuthor = authors.addAuthor(authorRequest.getUserID(), authorRequest.getPaperID());
             return new ResponseEntity<>(
@@ -32,7 +32,7 @@ public class AuthorController {
     }
 
     @DeleteMapping("authors/delete")
-    public ResponseEntity<?> deleteAuthor(@RequestBody AuthorRequest authorRequest){
+    public ResponseEntity<?> deleteAuthor(@RequestBody AuthorDTO authorRequest){
         try{
             authors.deleteAuthor(authorRequest.getUserID());
             return new ResponseEntity<>(
@@ -56,7 +56,7 @@ public class AuthorController {
     }
 
     @GetMapping("authors/list/paper")
-    public ResponseEntity<?> getAuthorsOfPaper(@RequestBody AuthorRequest authorRequest){
+    public ResponseEntity<?> getAuthorsOfPaper(@RequestBody AuthorDTO authorRequest){
         try{
             return new ResponseEntity<>(
                     authors.getAuthorsOfPaper(authorRequest.getPaperID()),

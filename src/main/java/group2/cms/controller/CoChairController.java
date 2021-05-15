@@ -1,6 +1,6 @@
 package group2.cms.controller;
 
-import group2.cms.controller.Request.CoChairRequest;
+import group2.cms.service.DTO.CoChairRequest;
 import group2.cms.exceptions.BackendException;
 import group2.cms.service.CoChairService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package group2.cms.controller.Request;
+package group2.cms.service.DTO;
 
 import group2.cms.domain.PCMember;
 import group2.cms.domain.Paper;

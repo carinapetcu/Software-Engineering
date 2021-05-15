@@ -1,6 +1,6 @@
 package group2.cms.controller;
 
-import group2.cms.controller.Request.ConferenceRequest;
+import group2.cms.service.DTO.ConferenceRequest;
 import group2.cms.exceptions.BackendException;
 import group2.cms.service.ConferenceService;
 import org.springframework.beans.factory.annotation.Autowired;

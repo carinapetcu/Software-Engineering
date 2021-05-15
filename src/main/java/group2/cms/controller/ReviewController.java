@@ -1,9 +1,7 @@
 package group2.cms.controller;
 
-import group2.cms.controller.Request.PresentationRequest;
-import group2.cms.controller.Request.ReviewRequest;
+import group2.cms.service.DTO.ReviewRequest;
 import group2.cms.exceptions.BackendException;
-import group2.cms.service.PresentationService;
 import group2.cms.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
