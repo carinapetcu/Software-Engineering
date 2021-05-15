@@ -1,6 +1,6 @@
 package group2.cms.controller;
 
-import group2.cms.controller.Request.PCMemberRequest;
+import group2.cms.service.DTO.PCMemberRequest;
 import group2.cms.exceptions.BackendException;
 import group2.cms.service.PCMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
