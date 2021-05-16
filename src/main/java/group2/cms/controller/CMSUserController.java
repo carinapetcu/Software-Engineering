@@ -1,6 +1,6 @@
 package group2.cms.controller;
 
-import group2.cms.controller.Request.CMSUserRequest;
+import group2.cms.service.DTO.CMSUserRequest;
 import group2.cms.exceptions.BackendException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

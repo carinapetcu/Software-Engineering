@@ -1,4 +1,4 @@
-package group2.cms.controller.Request;
+package group2.cms.service.DTO;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode
 @ToString
-public class ChairRequest implements Serializable {
+public class CoChairRequest implements Serializable {
     private Long userID;
     private String affiliation;
     private String website;

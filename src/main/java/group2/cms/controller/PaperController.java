@@ -1,6 +1,6 @@
 package group2.cms.controller;
 
-import group2.cms.controller.Request.PaperRequest;
+import group2.cms.service.DTO.PaperRequest;
 import group2.cms.domain.Author;
 import group2.cms.domain.Keyword;
 import group2.cms.domain.Paper;
