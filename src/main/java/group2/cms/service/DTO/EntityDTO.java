@@ -2,4 +2,6 @@ package group2.cms.service.DTO;
 
 import group2.cms.domain.BaseEntity;
 
-public abstract class EntityDTO<T extends BaseEntity<?>> { }
+import java.io.Serializable;
+
+public abstract class EntityDTO<T extends BaseEntity<?>> implements Serializable { }

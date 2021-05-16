@@ -1,17 +1,18 @@
-package group2.cms.service.DTO;
+package group2.cms.service.DTO.Conference;
 
-import group2.cms.domain.BaseEntity;
+import group2.cms.domain.Conference;
+import group2.cms.service.DTO.EntityDTO;
 import lombok.*;
 
 import java.time.LocalDate;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@Data
-@Builder
-public class ConferenceRequest extends BaseEntity<Integer> {
+@Getter
+@Builder(toBuilder = true)
+public class ConferenceDTO extends EntityDTO<Conference> {
+    private Long id;
     private String name;
     private String edition;
     private LocalDate startDate;

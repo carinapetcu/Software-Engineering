@@ -1,25 +1,20 @@
 package group2.cms.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
-// @AllArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 // @ToString
-public class Conference {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Conference extends BaseEntity<Long>{
 
     private String name;
     private String edition;
