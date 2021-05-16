@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AuthorDTOConverter implements DTOConverter<Author, AuthorDTO> {
-    
+
     /// Paper must be retrieved (if present in the database) and set manually with author.setPaper() by the service
     @Override
     public Author dtoToEntity(AuthorDTO dto) {

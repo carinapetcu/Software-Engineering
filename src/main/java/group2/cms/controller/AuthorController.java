@@ -16,9 +16,9 @@ public class AuthorController {
     private AuthorService authors;
 
     @PostMapping("authors/add")
-    public ResponseEntity<?> addAuthor(@RequestBody AuthorDTO authorRequest){
+    public ResponseEntity<?> addAuthor(@RequestBody AuthorDTO authorDTO){
         try{
-            var addedAuthor = authors.addAuthor(authorRequest.getUserID(), authorRequest.getPaperID());
+            var addedAuthor = authors.addAuthor(authorDTO);
             return new ResponseEntity<>(
                     addedAuthor,
                     HttpStatus.OK
@@ -32,9 +32,9 @@ public class AuthorController {
     }
 
     @DeleteMapping("authors/delete")
-    public ResponseEntity<?> deleteAuthor(@RequestBody AuthorDTO authorRequest){
+    public ResponseEntity<?> deleteAuthor(@RequestBody AuthorDTO authorDTO){
         try{
-            authors.deleteAuthor(authorRequest.getUserID());
+            authors.deleteAuthor(authorDTO);
             return new ResponseEntity<>(
                     "Author deleted",
                     HttpStatus.OK
@@ -56,10 +56,10 @@ public class AuthorController {
     }
 
     @GetMapping("authors/list/paper")
-    public ResponseEntity<?> getAuthorsOfPaper(@RequestBody AuthorDTO authorRequest){
+    public ResponseEntity<?> getAuthorsOfPaper(@RequestBody AuthorDTO authorDTO){
         try{
             return new ResponseEntity<>(
-                    authors.getAuthorsOfPaper(authorRequest.getPaperID()),
+                    authors.getAuthorsOfPaper(authorDTO),
                     HttpStatus.OK
             ) ;
         }catch(BackendException e){
@@ -71,11 +71,11 @@ public class AuthorController {
 
     }
 
-    @GetMapping("authors/{authorID}")
-    public ResponseEntity<?> getAuthor(@PathVariable Long authorID){
+    @GetMapping("authors/author")
+    public ResponseEntity<?> getAuthor(@RequestBody AuthorDTO authorDTO){
         try{
             return new ResponseEntity<>(
-                    authors.getAuthorByID(authorID),
+                    authors.getAuthorByID(authorDTO),
                     HttpStatus.OK
             );
         }catch(BackendException e){
