@@ -9,7 +9,7 @@ import java.util.Collection;
 public abstract class EntitiesDTO<T extends EntityDTO<?>> implements Serializable {
     private Collection<T> dtos = new ArrayList<>();
 
-    public void addDTOS(T... dtos){
+    public final void addDTOS(T... dtos){
         this.dtos.addAll(Arrays.asList(dtos));
     }
 

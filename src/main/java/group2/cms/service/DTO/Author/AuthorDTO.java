@@ -8,8 +8,7 @@ import java.io.Serializable;
 
 
 @Builder(toBuilder = true)
-@NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @ToString
 @Getter
 public class AuthorDTO extends EntityDTO<Author> implements Serializable {
