@@ -22,8 +22,8 @@ public class ConferenceService {
         return converter.entityToDto(newConference);
     }
 
-    public void deleteConference(ConferenceDTO conferenceDTO) {
-        repository.deleteById(conferenceDTO.getId());
+    public void deleteConference(Long conferenceID) {
+        repository.deleteById(conferenceID);
     }
 
     public ConferenceDTO updateConference(ConferenceDTO conferenceDTO) {
@@ -44,9 +44,8 @@ public class ConferenceService {
         return converter.entityToDto(repository.save(conf));
     }
 
-    public ConferenceDTO getById(ConferenceDTO conferenceDTO)
+    public ConferenceDTO getById(Long conferenceID)
     {
-        var conferenceID = conferenceDTO.getId();
         var conference = repository.findById(conferenceID).orElseThrow(
                 () -> new InvalidIDException("Invalid conference ID: " + conferenceID)
         );

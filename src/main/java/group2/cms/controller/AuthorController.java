@@ -31,10 +31,10 @@ public class AuthorController {
         }
     }
 
-    @DeleteMapping("authors/delete")
-    public ResponseEntity<?> deleteAuthor(@RequestBody AuthorDTO authorDTO){
+    @DeleteMapping("authors/delete/{authorID}")
+    public ResponseEntity<?> deleteAuthor(@PathVariable Long authorID){
         try{
-            authors.deleteAuthor(authorDTO);
+            authors.deleteAuthor(authorID);
             return new ResponseEntity<>(
                     "Author deleted",
                     HttpStatus.OK
@@ -71,11 +71,11 @@ public class AuthorController {
 
     }
 
-    @GetMapping("authors/author")
-    public ResponseEntity<?> getAuthor(@RequestBody AuthorDTO authorDTO){
+    @GetMapping("authors/{authorID}")
+    public ResponseEntity<?> getAuthor(@PathVariable Long authorID){
         try{
             return new ResponseEntity<>(
-                    authors.getAuthorByID(authorDTO),
+                    authors.getAuthorByID(authorID),
                     HttpStatus.OK
             );
         }catch(BackendException e){

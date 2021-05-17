@@ -46,10 +46,10 @@ public class ConferenceController{
     }
 
 
-    @DeleteMapping("conferences/delete")
-    public ResponseEntity<?> deleteConference(@RequestBody ConferenceDTO conferenceDTO){
+    @DeleteMapping("conferences/delete/{conferenceID}")
+    public ResponseEntity<?> deleteConference(@PathVariable Long conferenceID){
         try{
-            conferences.deleteConference(conferenceDTO);
+            conferences.deleteConference(conferenceID);
             return new ResponseEntity<>(
                     "Conference deleted",
                     HttpStatus.OK
@@ -70,11 +70,11 @@ public class ConferenceController{
         );
     }
 
-    @GetMapping("conferences/conference")
-    public ResponseEntity<?> getConference(@RequestBody ConferenceDTO conferenceDTO){
+    @GetMapping("conferences/{confID}")
+    public ResponseEntity<?> getConference(@PathVariable Long confID){
         try{
             return new ResponseEntity<>(
-                    conferences.getById(conferenceDTO),
+                    conferences.getById(confID),
                     HttpStatus.OK
             );
         }catch(BackendException e){

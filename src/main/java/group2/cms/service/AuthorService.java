@@ -28,8 +28,9 @@ public class AuthorService {
     private AuthorRepository authorRepository;
 
     public AuthorDTO addAuthor(AuthorDTO authorDTO){
-        var userID = authorDTO.getUserID();
-        var paperID = authorDTO.getPaperID();
+        var authorData = converter.dtoToEntity(authorDTO);
+        var userID = authorData.getId();
+        var paperID = authorData.getPaper().getId();
         var paperUploader = userRepository.findById(userID).orElseThrow(
                 () -> new InvalidIDException("Invalid User ID: " + userID)
         );
@@ -41,9 +42,9 @@ public class AuthorService {
         return converter.entityToDto(addedAuthor);
     }
 
-    public void deleteAuthor(AuthorDTO authorDTO)
+    public void deleteAuthor(Long authorID)
     {
-        authorRepository.deleteById(authorDTO.getUserID());
+        authorRepository.deleteById(authorID);
     }
 
     public AuthorsDTO getAllAuthors(){
@@ -55,7 +56,7 @@ public class AuthorService {
     }
 
     public AuthorsDTO getAuthorsOfPaper(AuthorDTO authorDTO){
-        var paperID = authorDTO.getPaperID();
+        var paperID = converter.dtoToEntity(authorDTO).getPaper().getId();
         var paper = paperRepository.findById(paperID).orElseThrow(
                 () -> new InvalidIDException("Invalid Paper ID: " + paperID)
         );
@@ -66,8 +67,7 @@ public class AuthorService {
         return authorsDTO;
     }
 
-    public AuthorDTO getAuthorByID(AuthorDTO authorDTO){
-        var authorID = authorDTO.getUserID();
+    public AuthorDTO getAuthorByID(Long authorID){
         var author =  authorRepository.findById(authorID).orElseThrow(
                 () -> new InvalidIDException("Invalid Author ID: " + authorID)
         );

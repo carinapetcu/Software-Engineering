@@ -14,7 +14,8 @@ public class ConferenceDTOConverter implements DTOConverter<Conference, Conferen
                 dto.getStartDate(),
                 dto.getEndDate()
         );
-       conference.setId(dto.getId());
+       if(dto.getId() != null)
+           conference.setId(dto.getId());
        return conference;
     }
 

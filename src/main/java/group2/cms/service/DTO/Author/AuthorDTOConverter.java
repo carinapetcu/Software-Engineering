@@ -2,6 +2,7 @@ package group2.cms.service.DTO.Author;
 
 import group2.cms.domain.Author;
 import group2.cms.domain.CMSUser;
+import group2.cms.domain.Paper;
 import group2.cms.service.DTO.DTOConverter;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +18,11 @@ public class AuthorDTOConverter implements DTOConverter<Author, AuthorDTO> {
                 dto.getUsername(),
                 dto.getPassword()
         );
-        user.setId(dto.getUserID());
-        return new Author(user);
+        if(dto.getUserID() != null)
+             user.setId(dto.getUserID());
+        var paper = new Paper();
+        paper.setId(dto.getPaperID());
+        return new Author(user, paper);
     }
 
     @Override
