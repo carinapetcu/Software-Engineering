@@ -6,6 +6,8 @@ import group2.cms.domain.Paper;
 import group2.cms.service.DTO.DTOConverter;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+
 @Component
 public class AuthorDTOConverter implements DTOConverter<Author, AuthorDTO> {
 
@@ -36,4 +38,15 @@ public class AuthorDTOConverter implements DTOConverter<Author, AuthorDTO> {
                 .paperID(author.getPaper().getId())
                 .build();
     }
+
+    @Override
+    public AuthorsDTO entitiesToDTO(Collection<Author> authors) {
+        var authorsDTO = new AuthorsDTO();
+        authors.stream()
+                .map(this::entityToDto)
+                .forEach(authorsDTO::addDTO);
+        return authorsDTO;
+    }
+
+
 }

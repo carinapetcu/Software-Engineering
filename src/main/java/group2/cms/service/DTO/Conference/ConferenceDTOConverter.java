@@ -4,6 +4,8 @@ import group2.cms.domain.Conference;
 import group2.cms.service.DTO.DTOConverter;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+
 @Component
 public class ConferenceDTOConverter implements DTOConverter<Conference, ConferenceDTO> {
     @Override
@@ -28,5 +30,16 @@ public class ConferenceDTOConverter implements DTOConverter<Conference, Conferen
                 .startDate(conference.getStartDate())
                 .endDate(conference.getEndDate())
                 .build();
+    }
+
+    @Override
+    public ConferencesDTO entitiesToDTO(Collection<Conference> conferences) {
+        var conferencesDTO = new ConferencesDTO();
+
+        conferences.stream()
+                .map(this::entityToDto)
+                .forEach(conferencesDTO::addDTO);
+
+        return conferencesDTO;
     }
 }

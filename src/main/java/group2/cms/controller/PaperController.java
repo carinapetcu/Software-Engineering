@@ -7,7 +7,7 @@ import group2.cms.exceptions.BackendException;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.service.AuthorService;
 import group2.cms.service.DTO.Author.AuthorDTOConverter;
-import group2.cms.service.DTO.PaperRequest;
+import group2.cms.service.DTO.Paper.PaperDTO;
 import group2.cms.service.KeywordService;
 import group2.cms.service.PaperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +35,16 @@ public class PaperController {
     private AuthorDTOConverter authorConverter;
 
     @PostMapping("papers/add")
-    public ResponseEntity<?> addPaper(@RequestBody PaperRequest paperRequest){
+    public ResponseEntity<?> addPaper(@RequestBody PaperDTO paperRequest){
         try{
 
-            List<Author> authors = paperRequest.getAuthorList()
+            List<Author> authors = paperRequest.getAuthorIDs()
                     .stream()
                     .map(authorService::getAuthorByID)
                     .map(authorConverter::dtoToEntity)
                     .collect(Collectors.toList());
 
-            Set<Keyword> keywords = paperRequest.getKeywordSet()
+            Set<Keyword> keywords = paperRequest.getKeywords()
                     .stream()
                     .map(keyword -> {
                         try{

@@ -89,4 +89,34 @@ public class CMSUserController {
             );
         }
     }
+
+    @GetMapping("users/email/{email}")
+    public ResponseEntity<?> getUserByID(@PathVariable String email){
+        try{
+            return new ResponseEntity<>(
+                    users.getUserByEmail(email),
+                    HttpStatus.OK
+            );
+        }catch (BackendException e){
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    @GetMapping("users/username/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username){
+        try{
+            return new ResponseEntity<>(
+                    users.getUserByUsername(username),
+                    HttpStatus.OK
+            );
+        }catch (BackendException e){
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
 }

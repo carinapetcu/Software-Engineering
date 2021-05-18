@@ -1,9 +1,9 @@
 package group2.cms.controller;
 
 
-import group2.cms.service.DTO.Author.AuthorDTO;
 import group2.cms.exceptions.BackendException;
 import group2.cms.service.AuthorService;
+import group2.cms.service.DTO.Author.AuthorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,6 +76,36 @@ public class AuthorController {
         try{
             return new ResponseEntity<>(
                     authors.getAuthorByID(authorID),
+                    HttpStatus.OK
+            );
+        }catch(BackendException e){
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    @GetMapping("authors/email/{email}")
+    public ResponseEntity<?> getAuthorByEmail(@PathVariable String email){
+        try{
+            return new ResponseEntity<>(
+                    authors.getAuthorByEmail(email),
+                    HttpStatus.OK
+            );
+        }catch(BackendException e){
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    @GetMapping("authors/username/{username}")
+    public ResponseEntity<?> getAuthorByUsername(@PathVariable String username){
+        try{
+            return new ResponseEntity<>(
+                    authors.getAuthorByUsername(username),
                     HttpStatus.OK
             );
         }catch(BackendException e){

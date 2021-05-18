@@ -95,13 +95,7 @@ public class CMSUserService {
     }
 
     public CMSUsersDTO getAllUsers(){
-        var usersDTO = new CMSUsersDTO();
-
-        userRepository.findAll().stream()
-        .map(converter::entityToDto)
-        .forEach(usersDTO::addDTO);
-
-        return usersDTO;
+      return converter.entitiesToDTO(userRepository.findAll());
     }
 
 }
