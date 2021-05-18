@@ -14,7 +14,7 @@ public class CMSUserController {
     @Autowired
     private CMSUserService users;
 
-    @PostMapping("users/add")
+    @PostMapping("/user")
     public ResponseEntity<?> addUser(@RequestBody CMSUserDTO userDTO) {
         try {
             return new ResponseEntity<>(
@@ -29,7 +29,7 @@ public class CMSUserController {
         }
     }
 
-    @PostMapping("users/update")
+    @PutMapping("/user")
     public ResponseEntity<?> updateUser(@RequestBody CMSUserDTO userDTO) {
         try {
             return new ResponseEntity<>(
@@ -44,7 +44,7 @@ public class CMSUserController {
         }
     }
 
-    @DeleteMapping("users/delete/{userID}")
+    @DeleteMapping("/user/{userID}")
     public ResponseEntity<?> deleteUser(@PathVariable Long userID){
         try{
             users.deleteUser(userID);
@@ -60,7 +60,7 @@ public class CMSUserController {
         }
     }
 
-    @GetMapping("users/list")
+    @GetMapping("/users")
     public ResponseEntity<?> getAllUsers(){
         try{
             return new ResponseEntity<>(
@@ -75,7 +75,7 @@ public class CMSUserController {
         }
     }
 
-    @GetMapping("users/{userID}")
+    @GetMapping("/user/{userID}")
     public ResponseEntity<?> getUserByID(@PathVariable Long userID){
         try{
             return new ResponseEntity<>(
@@ -90,8 +90,8 @@ public class CMSUserController {
         }
     }
 
-    @GetMapping("users/email/{email}")
-    public ResponseEntity<?> getUserByID(@PathVariable String email){
+    @GetMapping("/user/email/{email}")
+    public ResponseEntity<?> getUserByEmail(@PathVariable String email){
         try{
             return new ResponseEntity<>(
                     users.getUserByEmail(email),
@@ -105,7 +105,7 @@ public class CMSUserController {
         }
     }
 
-    @GetMapping("users/username/{username}")
+    @GetMapping("/user/username/{username}")
     public ResponseEntity<?> getUserByUsername(@PathVariable String username){
         try{
             return new ResponseEntity<>(
