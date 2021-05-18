@@ -48,11 +48,7 @@ public class AuthorService {
     }
 
     public AuthorsDTO getAllAuthors(){
-        var authorsDTO = new AuthorsDTO();
-        authorRepository.findAll().stream()
-                .map(converter::entityToDto)
-                .forEach(authorsDTO::addDTO);
-        return authorsDTO;
+        return converter.entitiesToDTO(authorRepository.findAll());
     }
 
     public AuthorsDTO getAuthorsOfPaper(AuthorDTO authorDTO){
@@ -60,11 +56,7 @@ public class AuthorService {
         var paper = paperRepository.findById(paperID).orElseThrow(
                 () -> new InvalidIDException("Invalid Paper ID: " + paperID)
         );
-        var authorsDTO = new AuthorsDTO();
-        authorRepository.findAuthorsByPaper(paper).stream()
-            .map(converter::entityToDto)
-            .forEach(authorsDTO::addDTO);
-        return authorsDTO;
+        return converter.entitiesToDTO(authorRepository.findAuthorsByPaper(paper));
     }
 
     public AuthorDTO getAuthorByID(Long authorID){
@@ -74,16 +66,14 @@ public class AuthorService {
         return converter.entityToDto(author);
     }
 
-    public AuthorDTO getAuthorByEmail(AuthorDTO authorDTO){
-        var email = authorDTO.getEmail();
+    public AuthorDTO getAuthorByEmail(String email){
         var author = authorRepository.findAuthorByEmail(email).orElseThrow(
                 () -> new InvalidIDException("Invalid Author email address: " + email)
         );
         return converter.entityToDto(author);
     }
 
-    public AuthorDTO getAuthorByUsername(AuthorDTO authorDTO){
-        var username = authorDTO.getUsername();
+    public AuthorDTO getAuthorByUsername(String username){
         var author = authorRepository.findAuthorByUsername(username).orElseThrow(
                 () -> new InvalidIDException("Invalid Author Username: " + username)
         );

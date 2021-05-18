@@ -4,6 +4,8 @@ import group2.cms.domain.CMSUser;
 import group2.cms.service.DTO.DTOConverter;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+
 @Component
 public class CMSUserDTOConverter implements DTOConverter<CMSUser, CMSUserDTO> {
     @Override
@@ -28,5 +30,16 @@ public class CMSUserDTOConverter implements DTOConverter<CMSUser, CMSUserDTO> {
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .build();
+    }
+
+    @Override
+    public CMSUsersDTO entitiesToDTO(Collection<CMSUser> users) {
+        var usersDTO = new CMSUsersDTO();
+
+        users.stream()
+                .map(this::entityToDto)
+                .forEach(usersDTO::addDTO);
+
+        return usersDTO;
     }
 }

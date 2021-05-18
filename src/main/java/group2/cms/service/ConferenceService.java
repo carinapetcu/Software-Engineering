@@ -27,14 +27,15 @@ public class ConferenceService {
     }
 
     public ConferenceDTO updateConference(ConferenceDTO conferenceDTO) {
-        var id = conferenceDTO.getId();
+        var conferenceData = converter.dtoToEntity(conferenceDTO);
+        var id = conferenceData.getId();
         var conf = repository.findById(id).orElseThrow(
                 () -> new InvalidIDException("Invalid conference ID:" + id)
         );
-        var name = conferenceDTO.getName();
-        var edition = conferenceDTO.getEdition();
-        var startDate = conferenceDTO.getStartDate();
-        var endDate = conferenceDTO.getEndDate();
+        var name = conferenceData.getName();
+        var edition = conferenceData.getEdition();
+        var startDate = conferenceData.getStartDate();
+        var endDate = conferenceData.getEndDate();
 
         if(name != null) conf.setName(name);
         if(edition != null) conf.setEdition(edition);
@@ -53,12 +54,6 @@ public class ConferenceService {
     }
 
     public ConferencesDTO getAll() {
-        var conferencesDTO = new ConferencesDTO();
-
-        repository.findAll().stream()
-        .map(converter::entityToDto)
-        .forEach(conferencesDTO::addDTO);
-
-        return conferencesDTO;
+        return converter.entitiesToDTO(repository.findAll());
     }
 }
