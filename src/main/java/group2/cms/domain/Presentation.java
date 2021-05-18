@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.File;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class Presentation {
+public class Presentation extends BaseEntity<Serializable> {
 
     @Id
     @GeneratedValue
@@ -30,4 +31,8 @@ public class Presentation {
     private LocalDate endDate;
 
     private File presentation;
+
+    public Presentation(Paper paper, Section section, LocalDate startDate, LocalDate endDate, File presentation) {
+        //work in progress, not sure if needed
+    }
 }
