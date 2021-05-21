@@ -1,14 +1,12 @@
 package group2.cms.controller;
 
-import group2.cms.service.DTO.CMSUserRequest;
 import group2.cms.exceptions.BackendException;
+import group2.cms.service.CMSUserService;
+import group2.cms.service.DTO.CMSUser.CMSUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import group2.cms.service.CMSUserService;
-
-import java.util.Optional;
 
 @RestController
 public class CMSUserController {
@@ -17,11 +15,10 @@ public class CMSUserController {
     private CMSUserService users;
 
     @PostMapping("users/add")
-    public ResponseEntity<?> addUser(@RequestBody CMSUserRequest request) {
+    public ResponseEntity<?> addUser(@RequestBody CMSUserDTO userDTO) {
         try {
             return new ResponseEntity<>(
-                    users.addUser(request.getFullName(), request.getEmail(),
-                            request.getUsername(), request.getPassword()),
+                    users.addUser(userDTO),
                     HttpStatus.OK
             );
         } catch (BackendException e) {
@@ -33,21 +30,10 @@ public class CMSUserController {
     }
 
     @PostMapping("users/update")
-    public ResponseEntity<?> updateUser(@RequestBody CMSUserRequest request) {
+    public ResponseEntity<?> updateUser(@RequestBody CMSUserDTO userDTO) {
         try {
-            var id = request.getId();
-            var fullName = request.getFullName();
-            var email = request.getEmail();
-            var username = request.getUsername();
-            var password = request.getPassword();
-
             return new ResponseEntity<>(
-                    users.updateUser(
-                            id,
-                            fullName.isBlank() ? Optional.empty() : Optional.of(fullName),
-                            email.isBlank() ? Optional.empty() : Optional.of(email),
-                            username.isBlank()? Optional.empty() : Optional.of(username),
-                            password.isBlank()? Optional.empty() : Optional.of(password)),
+                    users.updateUser(userDTO),
                     HttpStatus.OK
             );
         } catch (BackendException e) {
@@ -58,10 +44,9 @@ public class CMSUserController {
         }
     }
 
-    @DeleteMapping("users/delete")
-    public ResponseEntity<?> deleteUser(@RequestBody CMSUserRequest request){
+    @DeleteMapping("users/delete/{userID}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long userID){
         try{
-            var userID = request.getId();
             users.deleteUser(userID);
             return new ResponseEntity<>(
                     "User with ID: " + userID + "deleted.",
@@ -90,11 +75,41 @@ public class CMSUserController {
         }
     }
 
-    @GetMapping("users/list/{userID}")
+    @GetMapping("users/{userID}")
     public ResponseEntity<?> getUserByID(@PathVariable Long userID){
         try{
             return new ResponseEntity<>(
                     users.getUserByID(userID),
+                    HttpStatus.OK
+            );
+        }catch (BackendException e){
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    @GetMapping("users/email/{email}")
+    public ResponseEntity<?> getUserByID(@PathVariable String email){
+        try{
+            return new ResponseEntity<>(
+                    users.getUserByEmail(email),
+                    HttpStatus.OK
+            );
+        }catch (BackendException e){
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    @GetMapping("users/username/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username){
+        try{
+            return new ResponseEntity<>(
+                    users.getUserByUsername(username),
                     HttpStatus.OK
             );
         }catch (BackendException e){

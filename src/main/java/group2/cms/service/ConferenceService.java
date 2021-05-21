@@ -1,50 +1,59 @@
 package group2.cms.service;
 
-import group2.cms.domain.Conference;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.repository.ConferenceRepository;
+import group2.cms.service.DTO.Conference.ConferenceDTO;
+import group2.cms.service.DTO.Conference.ConferenceDTOConverter;
+import group2.cms.service.DTO.Conference.ConferencesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @Service
 public class ConferenceService {
+
+    @Autowired
+    private ConferenceDTOConverter converter;
+
     @Autowired
     private ConferenceRepository repository;
 
-    public Conference addConference(String name, String edition, LocalDate startDate, LocalDate endDate) {
-        var conf = new Conference();
-        conf.setName(name);
-        conf.setEdition(edition);
-        conf.setStartDate(startDate);
-        conf.setEndDate(endDate);
-        return repository.save(conf);
+    public ConferenceDTO addConference(ConferenceDTO conferenceDTO) {
+        var newConference = repository.save(converter.dtoToEntity(conferenceDTO));
+        return converter.entityToDto(newConference);
     }
 
-    public void deleteConference(Long id) {
-        repository.deleteById(id);
+    public void deleteConference(Long conferenceID) {
+        repository.deleteById(conferenceID);
     }
 
-    public Conference updateConference(Long id, String name, String edition, LocalDate startDate, LocalDate endDate) {
+    public ConferenceDTO updateConference(ConferenceDTO conferenceDTO) {
+        var conferenceData = converter.dtoToEntity(conferenceDTO);
+        var id = conferenceData.getId();
         var conf = repository.findById(id).orElseThrow(
                 () -> new InvalidIDException("Invalid conference ID:" + id)
         );
-        conf.setName(name);
-        conf.setEdition(edition);
-        conf.setStartDate(startDate);
-        conf.setEndDate(endDate);
+        var name = conferenceData.getName();
+        var edition = conferenceData.getEdition();
+        var startDate = conferenceData.getStartDate();
+        var endDate = conferenceData.getEndDate();
 
-        repository.deleteById(id);
-        return repository.save(conf);
+        if(name != null) conf.setName(name);
+        if(edition != null) conf.setEdition(edition);
+        if(startDate != null) conf.setStartDate(startDate);
+        if(endDate != null) conf.setEndDate(endDate);
+
+        return converter.entityToDto(repository.save(conf));
     }
 
-    public Conference getById(Long id) {
-        return repository.getOne(id);
+    public ConferenceDTO getById(Long conferenceID)
+    {
+        var conference = repository.findById(conferenceID).orElseThrow(
+                () -> new InvalidIDException("Invalid conference ID: " + conferenceID)
+        );
+        return converter.entityToDto(conference);
     }
 
-    public List<Conference> getAll() {
-        return repository.findAll();
+    public ConferencesDTO getAll() {
+        return converter.entitiesToDTO(repository.findAll());
     }
 }

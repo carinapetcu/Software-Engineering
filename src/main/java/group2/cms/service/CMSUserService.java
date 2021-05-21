@@ -1,19 +1,23 @@
 package group2.cms.service;
 
 
-import group2.cms.domain.CMSUser;
 import group2.cms.exceptions.CredentialsAlreadyInUseException;
 import group2.cms.exceptions.InvalidCredentialsException;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.repository.UserRepository;
+import group2.cms.service.DTO.CMSUser.CMSUserDTO;
+import group2.cms.service.DTO.CMSUser.CMSUserDTOConverter;
+import group2.cms.service.DTO.CMSUser.CMSUsersDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CMSUserService {
+
+    @Autowired
+    private CMSUserDTOConverter converter;
 
     @Autowired
     private UserRepository userRepository;
@@ -32,58 +36,66 @@ public class CMSUserService {
     }
 
 
-    public CMSUser addUser(String fullName,  String email, String username, String password) {
-        throwExceptionIfCredentialsAlreadyInUse(username, email);
-        return userRepository.save(new CMSUser(
-                fullName,
-                email,
-                username,
-                password
-        ));
+    public CMSUserDTO addUser(CMSUserDTO userDTO) {
+        var newUser = converter.dtoToEntity(userDTO);
+        throwExceptionIfCredentialsAlreadyInUse(newUser.getUsername(), newUser.getEmail());
+        return converter.entityToDto(userRepository.save(newUser));
     }
 
-    public CMSUser updateUser(Long userID, Optional<String> fullName, Optional<String> email, Optional<String> username,
-                              Optional<String> password){
+    public CMSUserDTO updateUser(CMSUserDTO userDTO){
+        var updatedUserData = converter.dtoToEntity(userDTO);
+        var userID = updatedUserData.getId();
         var user = userRepository.findById(userID).orElseThrow(
                 () -> new InvalidIDException("Invalid User ID: " + userID)
         );
 
         throwExceptionIfCredentialsAlreadyInUse(
-                username.orElse(""),
-                email.orElse(""));
+                Optional.ofNullable(updatedUserData.getUsername()).orElse(""),
+                Optional.ofNullable(updatedUserData.getEmail()).orElse(""));
 
-        fullName.ifPresent(user::setFullName);
-        username.ifPresent(user::setUsername);
-        email.ifPresent(user::setEmail);
-        password.ifPresent(user::setPassword);
+        if(updatedUserData.getFullName() != null)
+            user.setFullName(updatedUserData.getFullName());
 
-        return userRepository.save(user);
+        if(updatedUserData.getEmail() != null)
+            user.setEmail(updatedUserData.getEmail());
+
+        if(updatedUserData.getUsername() != null)
+            user.setUsername(updatedUserData.getUsername());
+
+        if(updatedUserData.getPassword() != null)
+            user.setPassword(updatedUserData.getPassword());
+
+
+        return converter.entityToDto(userRepository.save(user));
     }
 
     public void deleteUser(Long userID){
         userRepository.deleteById(userID);
     }
 
-    public CMSUser getUserByID(Long userID){
-        return userRepository.findById(userID).orElseThrow(
+    public CMSUserDTO getUserByID(Long userID){
+        var user = userRepository.findById(userID).orElseThrow(
                 () -> new InvalidIDException("Invalid User ID: " + userID)
         );
+        return converter.entityToDto(user);
     }
 
-    public CMSUser getUserByUsername(String username){
-        return userRepository.findByUsername(username).orElseThrow(
+    public CMSUserDTO getUserByUsername(String username){
+        var user= userRepository.findByUsername(username).orElseThrow(
                 () -> new InvalidCredentialsException("There is no user with the username: " + username)
         );
+        return converter.entityToDto(user);
     }
 
-    public CMSUser getUserByEmail(String email){
-        return userRepository.findByEmail(email).orElseThrow(
+    public CMSUserDTO getUserByEmail(String email){
+        var user = userRepository.findByEmail(email).orElseThrow(
                 () -> new InvalidCredentialsException("There is no user with the given email address: " + email)
         );
+        return converter.entityToDto(user);
     }
 
-    public List<CMSUser> getAllUsers(){
-        return userRepository.findAll();
+    public CMSUsersDTO getAllUsers(){
+      return converter.entitiesToDTO(userRepository.findAll());
     }
 
 }

@@ -1,5 +1,8 @@
 package group2.cms.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,14 +12,13 @@ import java.util.Objects;
 
 
 @MappedSuperclass
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class BaseEntity<ID extends Serializable>implements Serializable {
     @Id
     @Column(name="id")
     @GeneratedValue
     protected ID id;
-
-    public BaseEntity(){
-    }
 
     public void setId(ID newId){
         this.id = newId;

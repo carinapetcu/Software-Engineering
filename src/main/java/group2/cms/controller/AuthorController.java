@@ -1,9 +1,9 @@
 package group2.cms.controller;
 
 
-import group2.cms.service.DTO.Author.AuthorDTO;
 import group2.cms.exceptions.BackendException;
 import group2.cms.service.AuthorService;
+import group2.cms.service.DTO.Author.AuthorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +16,9 @@ public class AuthorController {
     private AuthorService authors;
 
     @PostMapping("authors/add")
-    public ResponseEntity<?> addAuthor(@RequestBody AuthorDTO authorRequest){
+    public ResponseEntity<?> addAuthor(@RequestBody AuthorDTO authorDTO){
         try{
-            var addedAuthor = authors.addAuthor(authorRequest.getUserID(), authorRequest.getPaperID());
+            var addedAuthor = authors.addAuthor(authorDTO);
             return new ResponseEntity<>(
                     addedAuthor,
                     HttpStatus.OK
@@ -31,10 +31,10 @@ public class AuthorController {
         }
     }
 
-    @DeleteMapping("authors/delete")
-    public ResponseEntity<?> deleteAuthor(@RequestBody AuthorDTO authorRequest){
+    @DeleteMapping("authors/delete/{authorID}")
+    public ResponseEntity<?> deleteAuthor(@PathVariable Long authorID){
         try{
-            authors.deleteAuthor(authorRequest.getUserID());
+            authors.deleteAuthor(authorID);
             return new ResponseEntity<>(
                     "Author deleted",
                     HttpStatus.OK
@@ -56,10 +56,10 @@ public class AuthorController {
     }
 
     @GetMapping("authors/list/paper")
-    public ResponseEntity<?> getAuthorsOfPaper(@RequestBody AuthorDTO authorRequest){
+    public ResponseEntity<?> getAuthorsOfPaper(@RequestBody AuthorDTO authorDTO){
         try{
             return new ResponseEntity<>(
-                    authors.getAuthorsOfPaper(authorRequest.getPaperID()),
+                    authors.getAuthorsOfPaper(authorDTO),
                     HttpStatus.OK
             ) ;
         }catch(BackendException e){
@@ -76,6 +76,36 @@ public class AuthorController {
         try{
             return new ResponseEntity<>(
                     authors.getAuthorByID(authorID),
+                    HttpStatus.OK
+            );
+        }catch(BackendException e){
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    @GetMapping("authors/email/{email}")
+    public ResponseEntity<?> getAuthorByEmail(@PathVariable String email){
+        try{
+            return new ResponseEntity<>(
+                    authors.getAuthorByEmail(email),
+                    HttpStatus.OK
+            );
+        }catch(BackendException e){
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    @GetMapping("authors/username/{username}")
+    public ResponseEntity<?> getAuthorByUsername(@PathVariable String username){
+        try{
+            return new ResponseEntity<>(
+                    authors.getAuthorByUsername(username),
                     HttpStatus.OK
             );
         }catch(BackendException e){
