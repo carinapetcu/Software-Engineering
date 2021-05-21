@@ -5,6 +5,7 @@ import group2.cms.domain.Keyword;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.repository.KeywordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,11 @@ public class KeywordService {
     }
 
     public void deleteKeyword(Long keywordId){
-        keywordRepository.deleteById(keywordId);
+        try{
+            keywordRepository.deleteById(keywordId);
+        }catch (EmptyResultDataAccessException | IllegalArgumentException e){
+            throw new InvalidIDException("Invalid Keyword ID: " + keywordId);
+        }
     }
 
     public List<Keyword> getAllKeywords(){

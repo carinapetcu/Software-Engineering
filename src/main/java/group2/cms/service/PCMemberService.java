@@ -5,6 +5,7 @@ import group2.cms.exceptions.InvalidIDException;
 import group2.cms.repository.PCMemberRepository;
 import group2.cms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +32,11 @@ public class PCMemberService {
     }
 
     public void deletePCMember(Long pcMemberID){
-        pcMemberRepository.deleteById(pcMemberID);
+        try{
+            pcMemberRepository.deleteById(pcMemberID);
+        }catch(EmptyResultDataAccessException | IllegalArgumentException e){
+            throw new InvalidIDException("Invalid PC Member ID: " + pcMemberID);
+        }
     }
 
     public PCMember updatePCMember(Long pcMemberID, Optional<String> newAffiliation, Optional<String> newWebsite){

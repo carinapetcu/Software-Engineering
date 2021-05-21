@@ -1,13 +1,15 @@
 package group2.cms.service;
 
-import group2.cms.domain.*;
+import group2.cms.domain.PCMember;
+import group2.cms.domain.Paper;
+import group2.cms.domain.Review;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -20,7 +22,11 @@ public class ReviewService {
     }
 
     public void deleteReview(Long reviewID){
-        reviewRepository.deleteById(reviewID);
+        try{
+            reviewRepository.deleteById(reviewID);
+        }catch(IllegalArgumentException | EmptyResultDataAccessException e){
+            throw new InvalidIDException("Invalid Review ID: " + reviewID);
+        }
     }
 
     public List<Review> getAllReviews(){

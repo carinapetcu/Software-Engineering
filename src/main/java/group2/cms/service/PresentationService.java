@@ -6,6 +6,7 @@ import group2.cms.domain.Section;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -23,7 +24,11 @@ public class PresentationService {
     }
 
     public void deletePresentation(Long presentationID){
-        presentationRepository.deleteById(presentationID);
+        try{
+            presentationRepository.deleteById(presentationID);
+        }catch(IllegalArgumentException | EmptyResultDataAccessException e){
+            throw new InvalidIDException("Invalid Presentation Exception: " + presentationID);
+        }
     }
 
     public List<Presentation> getAllPresentations(){
