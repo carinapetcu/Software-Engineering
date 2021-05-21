@@ -33,7 +33,7 @@ public class KeywordService {
     }
 
     public Keyword getKeyword(String keyword){
-        return keywordRepository.findKeyword(keyword)
+        return keywordRepository.findByKeyword(keyword)
                 .orElseThrow(() -> new InvalidIDException("invalid keyword " + keyword));
     }
 }

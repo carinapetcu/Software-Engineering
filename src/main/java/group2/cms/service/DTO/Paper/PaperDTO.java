@@ -5,7 +5,6 @@ import group2.cms.service.DTO.EntityDTO;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
 
 @Builder(toBuilder = true)
 @EqualsAndHashCode
@@ -20,5 +19,5 @@ public class PaperDTO extends EntityDTO<Paper> {
     private List<Long> authorIDs;
 
     @Singular
-    private Set<String> keywords;
+    private List<String> keywords;
 }

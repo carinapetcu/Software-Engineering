@@ -1,23 +1,12 @@
 package group2.cms.controller;
 
-import group2.cms.domain.Author;
-import group2.cms.domain.Keyword;
-import group2.cms.domain.Paper;
 import group2.cms.exceptions.BackendException;
-import group2.cms.exceptions.InvalidIDException;
-import group2.cms.service.AuthorService;
-import group2.cms.service.DTO.Author.AuthorDTOConverter;
 import group2.cms.service.DTO.Paper.PaperDTO;
-import group2.cms.service.KeywordService;
 import group2.cms.service.PaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 public class PaperController {
@@ -25,45 +14,11 @@ public class PaperController {
     @Autowired
     private PaperService paperService;
 
-    @Autowired
-    private AuthorService authorService;
-
-    @Autowired
-    private KeywordService keywordService;
-
-    @Autowired
-    private AuthorDTOConverter authorConverter;
-
-    @PostMapping("papers/add")
-    public ResponseEntity<?> addPaper(@RequestBody PaperDTO paperRequest){
+    @PostMapping("/paper")
+    public ResponseEntity<?> addPaper(@RequestBody PaperDTO paperDTO){
         try{
-
-            List<Author> authors = paperRequest.getAuthorIDs()
-                    .stream()
-                    .map(authorService::getAuthorByID)
-                    .map(authorConverter::dtoToEntity)
-                    .collect(Collectors.toList());
-
-            Set<Keyword> keywords = paperRequest.getKeywords()
-                    .stream()
-                    .map(keyword -> {
-                        try{
-                            return keywordService.getKeyword(keyword);
-                        }
-                        catch(InvalidIDException e){
-                            return keywordService.addKeyword(keyword);
-                        }
-
-                    })
-                    .collect(Collectors.toSet());
-
-            Paper paper = paperService.addPaper(paperRequest.getTitle(),
-                    paperRequest.getPaperAbstract(),
-                    authors,
-                    keywords);
-
             return new ResponseEntity<>(
-                    paper,
+                    paperService.addPaper(paperDTO),
                     HttpStatus.OK
             );
         }catch(BackendException e){
@@ -74,7 +29,7 @@ public class PaperController {
         }
     }
 
-    @DeleteMapping("papers/delete/{paperId}")
+    @DeleteMapping("/paper/{paperId}")
     public ResponseEntity<?> deletePaper(@PathVariable Long paperId){
         try{
             paperService.deletePaper(paperId);
@@ -91,7 +46,7 @@ public class PaperController {
     }
 
 
-    @GetMapping("papers/list")
+    @GetMapping("/paper")
     public ResponseEntity<?> getAllPapers(){
         return new ResponseEntity<>(
                 paperService.getAllPapers(),
@@ -99,7 +54,7 @@ public class PaperController {
         );
     }
 
-    @GetMapping("papers/{paperId}")
+    @GetMapping("/paper/{paperId}")
     public ResponseEntity<?> getPaper(@PathVariable Long paperId){
         try{
             return new ResponseEntity<>(
@@ -114,7 +69,7 @@ public class PaperController {
         }
     }
 
-    @GetMapping("papers/title/{title}")
+    @GetMapping("/paper/title/{title}")
     public ResponseEntity<?> getPaperByTitle(@PathVariable String title){
         try{
             return new ResponseEntity<>(

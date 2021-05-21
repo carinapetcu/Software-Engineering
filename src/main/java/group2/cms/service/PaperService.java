@@ -1,16 +1,17 @@
 package group2.cms.service;
 
-import group2.cms.domain.Author;
-import group2.cms.domain.Keyword;
 import group2.cms.domain.Paper;
 import group2.cms.exceptions.InvalidIDException;
+import group2.cms.repository.AuthorRepository;
+import group2.cms.repository.KeywordRepository;
 import group2.cms.repository.PaperRepository;
+import group2.cms.service.DTO.Paper.PaperDTO;
 import group2.cms.service.DTO.Paper.PaperDTOConverter;
+import group2.cms.service.DTO.Paper.PapersDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PaperService {
@@ -19,27 +20,50 @@ public class PaperService {
     private PaperRepository paperRepository;
 
     @Autowired
+    private AuthorRepository authorRepository;
+
+    @Autowired
+    KeywordRepository keywordRepository;
+
+    @Autowired
     private PaperDTOConverter converter;
 
-    public Paper addPaper(String title, String paperAbstract, List<Author> authorList, Set<Keyword> keywordSet){
-        return paperRepository.save(new Paper(title, paperAbstract, authorList, keywordSet));
+    public Paper addPaper(PaperDTO paperDTO){
+        var paperData = converter.dtoToEntity(paperDTO);
+        var title = paperData.getTitle();
+        var paperAbstract = paperData.getPaperAbstract();
+        var authors = paperData.getAuthorList().stream()
+                .map((authorData) ->
+                     authorRepository.findById(authorData.getId()).orElseThrow(
+                            () -> new InvalidIDException("Invalid Author ID in Paper DTO: " + authorData.getId())
+                    )).collect(Collectors.toList());
+
+        var keywords = paperData.getKeywordSet().stream()
+                .map((keyword) ->
+                    keywordRepository.findByKeyword(keyword.getKeyword()).orElseThrow(
+                            () -> new InvalidIDException("Invaid keyword: " + keyword.getKeyword())
+                    )).collect(Collectors.toSet());
+
+        return paperRepository.save(new Paper(title, paperAbstract, authors, keywords));
     }
 
     public void deletePaper(Long paperId){
         paperRepository.deleteById(paperId);
     }
 
-    public List<Paper> getAllPapers(){
-        return paperRepository.findAll();
+    public PapersDTO getAllPapers(){
+        return converter.entitiesToDTO(paperRepository.findAll());
     }
 
-    public Paper getPaperById(Long paperId){
-        return paperRepository.findById(paperId)
+    public PaperDTO getPaperById(Long paperId){
+        var paper = paperRepository.findById(paperId)
                 .orElseThrow(() -> new InvalidIDException("Invalid paperId " + paperId));
+        return converter.entityToDto(paper);
     }
 
-    public Paper getPaperByTitle(String title){
-        return paperRepository.findPaperByTitle(title)
+    public PaperDTO getPaperByTitle(String title){
+        var paper = paperRepository.findPaperByTitle(title)
                 .orElseThrow(() -> new InvalidIDException("Invalid title " + title));
+        return converter.entityToDto(paper);
     }
 }
