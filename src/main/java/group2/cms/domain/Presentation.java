@@ -34,5 +34,10 @@ public class Presentation extends BaseEntity<Serializable> {
 
     public Presentation(Paper paper, Section section, LocalDate startDate, LocalDate endDate, File presentation) {
         //work in progress, not sure if needed
+        this.paper=paper;
+        this.section=section;
+        this.startDate=startDate;
+        this.endDate=endDate;
+        this.presentation=presentation;
     }
 }
