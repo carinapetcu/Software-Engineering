@@ -9,6 +9,7 @@ import group2.cms.service.DTO.Paper.PaperDTO;
 import group2.cms.service.DTO.Paper.PaperDTOConverter;
 import group2.cms.service.DTO.Paper.PapersDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -48,7 +49,11 @@ public class PaperService {
     }
 
     public void deletePaper(Long paperId){
-        paperRepository.deleteById(paperId);
+        try{
+            paperRepository.deleteById(paperId);
+        }catch(IllegalArgumentException | EmptyResultDataAccessException e){
+            throw new InvalidIDException("Invalid Paper ID: " + paperId);
+        }
     }
 
     public PapersDTO getAllPapers(){

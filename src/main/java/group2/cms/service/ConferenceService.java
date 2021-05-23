@@ -6,6 +6,7 @@ import group2.cms.service.DTO.Conference.ConferenceDTO;
 import group2.cms.service.DTO.Conference.ConferenceDTOConverter;
 import group2.cms.service.DTO.Conference.ConferencesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +24,11 @@ public class ConferenceService {
     }
 
     public void deleteConference(Long conferenceID) {
-        repository.deleteById(conferenceID);
+        try{
+            repository.deleteById(conferenceID);
+        }catch (EmptyResultDataAccessException | IllegalArgumentException e){
+            throw new InvalidIDException("Invalid conferenceID: " + conferenceID);
+        }
     }
 
     public ConferenceDTO updateConference(ConferenceDTO conferenceDTO) {

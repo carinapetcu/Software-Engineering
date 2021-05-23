@@ -9,6 +9,7 @@ import group2.cms.service.DTO.Author.AuthorDTO;
 import group2.cms.service.DTO.Author.AuthorDTOConverter;
 import group2.cms.service.DTO.Author.AuthorsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 
@@ -44,7 +45,11 @@ public class AuthorService {
 
     public void deleteAuthor(Long authorID)
     {
-        authorRepository.deleteById(authorID);
+        try{
+            authorRepository.deleteById(authorID);
+        }catch(IllegalArgumentException | EmptyResultDataAccessException e){
+            throw new InvalidIDException("Invalid Author ID: " + authorID);
+        }
     }
 
     public AuthorsDTO getAllAuthors(){

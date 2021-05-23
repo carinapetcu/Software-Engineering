@@ -1,12 +1,12 @@
 package group2.cms.service;
 
 import group2.cms.domain.Listener;
-import group2.cms.domain.Section;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.repository.ListenerRepository;
 import group2.cms.repository.SectionRepository;
 import group2.cms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +32,11 @@ public class ListenerService {
     }
 
     public void deleteListener(Long listenerID){
-        listenerRepository.deleteById(listenerID);
+        try{
+            listenerRepository.deleteById(listenerID);
+        }catch (IllegalArgumentException | EmptyResultDataAccessException e){
+            throw new InvalidIDException("Invalid listenerID: " + listenerID);
+        }
     }
 
     public Listener addNewSection(Long listenerID, Long sectionID){

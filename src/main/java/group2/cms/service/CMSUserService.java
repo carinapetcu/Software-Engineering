@@ -9,6 +9,7 @@ import group2.cms.service.DTO.CMSUser.CMSUserDTO;
 import group2.cms.service.DTO.CMSUser.CMSUserDTOConverter;
 import group2.cms.service.DTO.CMSUser.CMSUsersDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -70,7 +71,11 @@ public class CMSUserService {
     }
 
     public void deleteUser(Long userID){
-        userRepository.deleteById(userID);
+        try{
+            userRepository.deleteById(userID);
+        }catch(EmptyResultDataAccessException | IllegalArgumentException e){
+            throw new InvalidIDException("Invalid User ID: " + userID);
+        }
     }
 
     public CMSUserDTO getUserByID(Long userID){

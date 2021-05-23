@@ -6,6 +6,7 @@ import group2.cms.exceptions.InvalidIDException;
 import group2.cms.repository.PCMemberRepository;
 import group2.cms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +33,11 @@ public class CoChairService {
     }
 
     public void deleteCoChair(Long coChairID){
-        pcMemberRepository.deleteById(coChairID);
+        try{
+            pcMemberRepository.deleteById(coChairID);
+        }catch(EmptyResultDataAccessException | IllegalArgumentException e){
+            throw new InvalidIDException("Invalid coChair ID: " + coChairID);
+        }
     }
 
     public CoChair updateCoChair(Long coChairID, Optional<String> newAffiliation, Optional<String> newWebsite){
