@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-//@NoArgsConstructor
+@NoArgsConstructor
 //@AllArgsConstructor
 @EqualsAndHashCode
 //@ToString
