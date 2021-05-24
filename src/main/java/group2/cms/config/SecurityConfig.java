@@ -1,5 +1,6 @@
 package group2.cms.config;
 
+import group2.cms.config.customAuthProviders.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,13 +22,35 @@ import java.util.Collections;
 @EnableWebSecurity
 @ComponentScan("group2.cms")
 @EnableGlobalMethodSecurity()
-public class SecuriyConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private CustomAuth customAuthProvider;
+    private CMSUserAuthProvider userCustomAuthProvider;
+
+    @Autowired
+    private AuthorAuthProvider authorCustomAuthProvider;
+
+    @Autowired
+    private ChairAuthProvider chairCustomAuthProvider;
+
+    @Autowired
+    private CoChairAuthProvider coChairCustomAuthProvider;
+
+    @Autowired
+    private ListenerAuthProvider listenerCustomAuthProvider;
+
+    @Autowired
+    private PCMemberAuthProvider pcMemberCustomAuthProvider;
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(customAuthProvider);
+        auth.authenticationProvider(userCustomAuthProvider);
+        auth.authenticationProvider(authorCustomAuthProvider);
+        auth.authenticationProvider(chairCustomAuthProvider);
+        auth.authenticationProvider(coChairCustomAuthProvider);
+        auth.authenticationProvider(listenerCustomAuthProvider);
+        auth.authenticationProvider(pcMemberCustomAuthProvider);
+
     }
 
     @Override

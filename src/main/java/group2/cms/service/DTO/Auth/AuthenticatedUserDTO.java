@@ -1,10 +1,11 @@
-package group2.cms.service.DTO.CMSUser;
+package group2.cms.service.DTO.Auth;
 
+import group2.cms.domain.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class AuthenticatedUserDTO {
     private String userName;
+    private Authority authority;
 }
