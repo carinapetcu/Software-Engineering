@@ -22,6 +22,7 @@ public class CustomAuthProvider<T extends CMSUser> implements AuthenticationProv
     private final GenericUserRepository<T> repo;
 
     public AuthenticatedUserDTO doAuth(Authentication auth) {
+        authenticate(auth);
         var loggedInUser = new AuthenticatedUserDTO();
         var ctx = SecurityContextHolder.getContext();
         loggedInUser.setUserName(ctx.getAuthentication().getName());
