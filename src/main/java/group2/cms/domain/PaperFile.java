@@ -1,5 +1,6 @@
 package group2.cms.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import javax.persistence.Lob;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class PaperFile extends BaseEntity<Long>{
