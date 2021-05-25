@@ -13,8 +13,7 @@ import java.time.LocalDate;
 
 
 @Builder(toBuilder = true)
-@NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @ToString
 @Getter
 public class PresentationDTO extends EntityDTO<Presentation> implements Serializable {

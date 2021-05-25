@@ -28,14 +28,13 @@ public class PaperFileService {
         repository.deleteById(id);
     }
 
-    PaperFileDTO getById(Long id) {
-        var file = repository.findById(id)
-                .orElseThrow(() -> new BackendException("File not found"));
-        return converter.entityToDto(file);
-    }
-
-    PaperFilesDTO getAll() {
-        return converter.entitiesToDTO(repository.findAll());
-    }
-
+//    PaperFileDTO getById(Long id) {
+//        var file = repository.findById(id)
+//                .orElseThrow(() -> new BackendException("File not found"));
+//        return converter.entityToDto(file);
+//    }
+//
+//    PaperFilesDTO getAll() {
+//        return converter.entitiesToDTO(repository.findAll());
+//    }
 }

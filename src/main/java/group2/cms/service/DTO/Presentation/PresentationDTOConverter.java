@@ -2,7 +2,10 @@ package group2.cms.service.DTO.Presentation;
 
 import group2.cms.domain.Presentation;
 import group2.cms.service.DTO.DTOConverter;
+import group2.cms.service.DTO.EntitiesDTO;
 import org.springframework.stereotype.Component;
+
+import java.util.Collection;
 
 @Component
 public class PresentationDTOConverter implements DTOConverter<Presentation, PresentationDTO> {
@@ -30,5 +33,10 @@ public class PresentationDTOConverter implements DTOConverter<Presentation, Pres
                 .endDate(presentation.getEndDate())
                 .presentation(presentation.getPresentation())
                 .build();
+    }
+
+    @Override
+    public EntitiesDTO<Presentation, PresentationDTO> entitiesToDTO(Collection<Presentation> entities) {
+        return null;
     }
 }
