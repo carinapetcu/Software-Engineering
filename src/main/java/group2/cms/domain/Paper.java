@@ -36,5 +36,9 @@ public class Paper extends BaseEntity<Long>{
         this.keywordSet = keywordSet;
     }
 
+    @OneToMany
+    @PrimaryKeyJoinColumn
+    private Set<PaperFile> files;
+
 //private List<String> keywords; TODO: investigate how to store keywords
 }
