@@ -4,31 +4,32 @@ import group2.cms.domain.Section;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.repository.PCMemberRepository;
 import group2.cms.repository.SectionRepository;
+import group2.cms.service.DTO.Section.SectionDTO;
+import group2.cms.service.DTO.Section.SectionDTOConverter;
+import group2.cms.service.DTO.Section.SectionsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class SectionService {
     @Autowired
     private SectionRepository sectionRepository;
     private PCMemberRepository pcMemberRepository;
+    private SectionDTOConverter converter;
 
-    public Section addSection(String room, Integer capacity, LocalDate startDate, LocalDate endDate, String theme, Long chairId) {
-        var section = new Section();
-        section.setRoom(room);
-        section.setCapacity(capacity);
-        section.setStartDate(startDate);
-        section.setEndDate(endDate);
-        section.setTheme(theme);
+    public SectionDTO addSection(SectionDTO dto) {
+        var section = converter.dtoToEntity(dto);
         section.setSessionChair(
                 pcMemberRepository
-                        .findById(chairId)
+                        .findById(section.getSessionChair().getId())
                         .orElseThrow(
-                                () -> new InvalidIDException("Invalid member ID: " + chairId)
+                                () -> new InvalidIDException("Invalid member ID: " + section.getSessionChair().getId())
                         )
         );
-        return sectionRepository.save(section);
+        return converter.entityToDto(sectionRepository.save(section));
     }
 
     public void deleteSection(Long id) {
@@ -53,11 +54,19 @@ public class SectionService {
         return sectionRepository.save(section);
     }
 
-    public Section findById(Long id) {
-        return sectionRepository.findById(id).orElseThrow(() -> new InvalidIDException("Invalid section id: " + id));
+    public SectionDTO findById(Long id) {
+        return converter.entityToDto(sectionRepository
+                .findById(id)
+                .orElseThrow(() -> new InvalidIDException("Invalid section id: " + id)));
     }
 
-    public List<Section> getAll() {
-        return sectionRepository.findAll();
+    public SectionsDTO getAll() {
+        var dto = new SectionsDTO();
+        var sections = sectionRepository.findAll();
+        for (Section section : sections) {
+            dto.addDTOS(
+                    converter.entityToDto(section));
+        }
+        return dto;
     }
 }

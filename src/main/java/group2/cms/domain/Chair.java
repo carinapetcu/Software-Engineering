@@ -7,16 +7,21 @@ import lombok.*;
 //@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class Chair extends PCMember{
-    public Chair(){}
+public class Chair extends PCMember {
+    public Chair() {
+    }
 
-    public Chair(CMSUser user, String affiliation, String webpage){
+    public Chair(CMSUser user, String affiliation, String webpage) {
         super(user, affiliation, webpage);
         this.authority = Authority.Chair;
     }
 
-    public Chair(CMSUser user, String affiliation){
+    public Chair(CMSUser user, String affiliation) {
         super(user, affiliation);
         this.authority = Authority.Chair;
+    }
+
+    public Chair(Long id) {
+        this.id = id;
     }
 }
