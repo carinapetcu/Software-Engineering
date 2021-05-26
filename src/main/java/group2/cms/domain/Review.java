@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.File;
+import java.io.Serializable;
 
 @Entity
 @Data
@@ -11,7 +12,7 @@ import java.io.File;
 @AllArgsConstructor
 //@ToString
 @EqualsAndHashCode
-public class Review {
+public class Review extends BaseEntity<Serializable> {
 
     @Id
     @GeneratedValue

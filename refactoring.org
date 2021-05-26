@@ -1,0 +1,51 @@
+#+TITLE: Software Engineering Emergency MASTERPLAN
+
+*   Repair the users clusterfuck
+**   CMSUser
+***   useru basic
+***   ii ok asa cum ii
+**   Author
+***   ii un CMSUser care publica un paper la o conferinta
+**   Listener
+***   ii un CMSUser care freaca menta la o conferinta
+***   specifica sectiunile de conferinta la care vrea sa participe
+**   PCMember
+***   ii un autor
+***   afiliere, pagina web
+***   pot sa dea review la Papers -> devin reviewer
+
+*   CONFERENCE
+**   trebuie sa aiba si details
+**   ar trebui sa aiba un Chair, n CoChairi, m PCMembers si l Listeneri
+**   ar trebui sa aiba mai multe sectiuni
+
+*   SECTION
+**   supervizat de un SessionChair (PCMember)
+**   ar trebui sa aiba mai multi speakeri, care is Author, nu poate fi SessionChairu
+**   ar trebui iara sa aiba mai multi listeneri
+
+
+* Posibile solutii
+**   ca entitati:
+***   CMSUser -> pur si simplu exista
+***   Autoru -> ca no
+***   PCMember(Author) -> care poate avea Authority de PCMember/CoChair/Chair
+***   Listener(CMSUser) -> Authority de Listener
+
+**   ca repo-uri
+***   CMSUserRepo
+***   AuthorRepo
+***   PCMemberRepo
+***   ListenerRepo
+
+function CMS(){
+    CMSUser users[];
+
+    conference {
+        Listener l1 = new Listener(users[x]);
+        ...
+
+    }
+    // no more listeners
+
+}
