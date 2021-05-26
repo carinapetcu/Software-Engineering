@@ -2,6 +2,7 @@ package group2.cms.service.DTO.Presentation;
 
 import group2.cms.domain.Presentation;
 import group2.cms.service.DTO.DTOConverter;
+import group2.cms.service.DTO.EntitiesDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -35,13 +36,7 @@ public class PresentationDTOConverter implements DTOConverter<Presentation, Pres
     }
 
     @Override
-    public PresentationsDTO entitiesToDTO(Collection<Presentation> presentations) {
-        var presentationsDTO = new PresentationsDTO();
-
-        presentations.stream()
-                .map(this::entityToDto)
-                .forEach(presentationsDTO::addDTO);
-
-        return presentationsDTO;
+    public EntitiesDTO<Presentation, PresentationDTO> entitiesToDTO(Collection<Presentation> entities) {
+        return null;
     }
 }
