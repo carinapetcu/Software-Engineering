@@ -25,9 +25,9 @@ public class PCMemberService {
                 () -> new InvalidIDException("Invalid User ID: " + userID)
         );
         return pcMemberRepository.save(new PCMember(
-                user,
-                affiliation,
-                website
+//                user,
+//                affiliation,
+//                website
         ));
     }
 
