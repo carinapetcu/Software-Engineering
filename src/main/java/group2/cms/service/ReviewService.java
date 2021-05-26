@@ -75,6 +75,13 @@ public class ReviewService {
         return converter.entityToDto(result);
     }
 
+    private void sendFeedbackToAuthor(FeedbackData data) {
+        var email = data.getAuthorEmail();
+        var subject = "Feedback for paper " + data.getPaperTitle();
+        var content = "Review result " + data.getReviewResult() + "\n" + data.getFeedback();
+        emailService.send(email, subject, content);
+    }
+
     public void deleteReview(Long reviewID) {
         try {
             reviewRepository.deleteById(reviewID);

@@ -11,12 +11,7 @@ import java.io.File;
 @AllArgsConstructor
 //@ToString
 @EqualsAndHashCode
-public class Review {
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
+public class Review extends BaseEntity<Long>{
     @ManyToOne
     @PrimaryKeyJoinColumn
     private PCMember pcMember;
@@ -25,7 +20,7 @@ public class Review {
     @PrimaryKeyJoinColumn
     private Paper paper;
 
-    private File feedback;
+    private String feedback;
 
     private Integer result;
 }
