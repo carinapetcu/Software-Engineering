@@ -15,15 +15,15 @@ public class AuthorController {
     @Autowired
     private AuthorService authors;
 
-    @PostMapping("authors/add")
-    public ResponseEntity<?> addAuthor(@RequestBody AuthorDTO authorDTO){
-        try{
+    @PostMapping("/author")
+    public ResponseEntity<?> addAuthor(@RequestBody AuthorDTO authorDTO) {
+        try {
             var addedAuthor = authors.addAuthor(authorDTO);
             return new ResponseEntity<>(
                     addedAuthor,
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -31,15 +31,15 @@ public class AuthorController {
         }
     }
 
-    @DeleteMapping("authors/delete/{authorID}")
-    public ResponseEntity<?> deleteAuthor(@PathVariable Long authorID){
-        try{
-            authors.deleteAuthor(authorID);
+    @DeleteMapping("/author/{id}")
+    public ResponseEntity<?> deleteAuthor(@PathVariable Long id) {
+        try {
+            authors.deleteAuthor(id);
             return new ResponseEntity<>(
                     "Author deleted",
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -47,22 +47,22 @@ public class AuthorController {
         }
     }
 
-    @GetMapping("authors/list")
-    public ResponseEntity<?> getAllAuthors(){
+    @GetMapping("/authors")
+    public ResponseEntity<?> getAllAuthors() {
         return new ResponseEntity<>(
                 authors.getAllAuthors(),
                 HttpStatus.OK
         );
     }
 
-    @GetMapping("authors/list/paper")
-    public ResponseEntity<?> getAuthorsOfPaper(@RequestBody AuthorDTO authorDTO){
-        try{
+    @GetMapping("/authors/{paperId}")
+    public ResponseEntity<?> getAuthorsOfPaper(@PathVariable Long paperId) {
+        try {
             return new ResponseEntity<>(
-                    authors.getAuthorsOfPaper(authorDTO),
+                    authors.getAuthorsOfPaper(paperId),
                     HttpStatus.OK
-            ) ;
-        }catch(BackendException e){
+            );
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -71,14 +71,14 @@ public class AuthorController {
 
     }
 
-    @GetMapping("authors/{authorID}")
-    public ResponseEntity<?> getAuthor(@PathVariable Long authorID){
-        try{
+    @GetMapping("/author/{id}")
+    public ResponseEntity<?> getAuthor(@PathVariable Long id) {
+        try {
             return new ResponseEntity<>(
-                    authors.getAuthorByID(authorID),
+                    authors.getAuthorByID(id),
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -86,14 +86,14 @@ public class AuthorController {
         }
     }
 
-    @GetMapping("authors/email/{email}")
-    public ResponseEntity<?> getAuthorByEmail(@PathVariable String email){
-        try{
+    @GetMapping("/author/{email}")
+    public ResponseEntity<?> getAuthorByEmail(@PathVariable String email) {
+        try {
             return new ResponseEntity<>(
                     authors.getAuthorByEmail(email),
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -101,14 +101,14 @@ public class AuthorController {
         }
     }
 
-    @GetMapping("authors/username/{username}")
-    public ResponseEntity<?> getAuthorByUsername(@PathVariable String username){
-        try{
+    @GetMapping("/author/{username}")
+    public ResponseEntity<?> getAuthorByUsername(@PathVariable String username) {
+        try {
             return new ResponseEntity<>(
                     authors.getAuthorByUsername(username),
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST

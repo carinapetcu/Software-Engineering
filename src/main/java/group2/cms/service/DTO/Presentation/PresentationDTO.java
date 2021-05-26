@@ -13,16 +13,14 @@ import java.time.LocalDate;
 
 
 @Builder(toBuilder = true)
-@NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @ToString
 @Getter
 public class PresentationDTO extends EntityDTO<Presentation> implements Serializable {
-    
-    private Long id;
-    private Paper paper;
-    private Section section;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private File presentation;
+    private final Long id;
+    private final Paper paper;
+    private final Section section;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final File presentation;
 }

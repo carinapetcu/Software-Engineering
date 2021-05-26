@@ -44,15 +44,15 @@ public class CMSUserController {
         }
     }
 
-    @DeleteMapping("/user/{userID}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long userID){
-        try{
-            users.deleteUser(userID);
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        try {
+            users.deleteUser(id);
             return new ResponseEntity<>(
-                    "User with ID: " + userID + "deleted.",
+                    "User with ID: " + id + "deleted.",
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -61,13 +61,13 @@ public class CMSUserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<?> getAllUsers(){
-        try{
+    public ResponseEntity<?> getAllUsers() {
+        try {
             return new ResponseEntity<>(
                     users.getAllUsers(),
                     HttpStatus.OK
             );
-        }catch (BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -75,14 +75,14 @@ public class CMSUserController {
         }
     }
 
-    @GetMapping("/user/{userID}")
-    public ResponseEntity<?> getUserByID(@PathVariable Long userID){
-        try{
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getUserByID(@PathVariable Long id) {
+        try {
             return new ResponseEntity<>(
-                    users.getUserByID(userID),
+                    users.getUserByID(id),
                     HttpStatus.OK
             );
-        }catch (BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -90,14 +90,14 @@ public class CMSUserController {
         }
     }
 
-    @GetMapping("/user/email/{email}")
-    public ResponseEntity<?> getUserByEmail(@PathVariable String email){
-        try{
+    @GetMapping("/user/{email}")
+    public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
+        try {
             return new ResponseEntity<>(
                     users.getUserByEmail(email),
                     HttpStatus.OK
             );
-        }catch (BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -105,14 +105,14 @@ public class CMSUserController {
         }
     }
 
-    @GetMapping("/user/username/{username}")
-    public ResponseEntity<?> getUserByUsername(@PathVariable String username){
-        try{
+    @GetMapping("/user/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
+        try {
             return new ResponseEntity<>(
                     users.getUserByUsername(username),
                     HttpStatus.OK
             );
-        }catch (BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST

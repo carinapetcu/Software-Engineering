@@ -14,11 +14,11 @@ import java.time.LocalDate;
 @ToString
 @Getter
 public class SectionDTO extends EntityDTO<Section> {
-    private Long id;
-    private String room;
-    private Integer capacity;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private String theme;
-    private Long pcMemberId;
+    private final Long id;
+    private final String room;
+    private final Integer capacity;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final String theme;
+    private final Long pcMemberId;
 }

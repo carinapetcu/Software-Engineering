@@ -13,9 +13,9 @@ public class ReviewController {
     @Autowired
     private ReviewService reviews;
 
-    @PostMapping("reviews/add")
-    public ResponseEntity<?> addReviews(@RequestBody ReviewRequest reviewRequest){
-        try{
+    @PostMapping("/review")
+    public ResponseEntity<?> addReviews(@RequestBody ReviewRequest reviewRequest) {
+        try {
             var addedReview = reviews.addReview(reviewRequest.getReviewID(),
                     reviewRequest.getPcMember(),
                     reviewRequest.getPaper(),
@@ -25,7 +25,7 @@ public class ReviewController {
                     addedReview,
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -33,15 +33,15 @@ public class ReviewController {
         }
     }
 
-    @DeleteMapping("reviews/delete")
-    public ResponseEntity<?> deleteReviews(@RequestBody ReviewRequest reviewRequest){
-        try{
-            reviews.deleteReview(reviewRequest.getReviewID());
+    @DeleteMapping("/review/{id}")
+    public ResponseEntity<?> deleteReviews(@PathVariable Long id) {
+        try {
+            reviews.deleteReview(id);
             return new ResponseEntity<>(
                     "Review deleted",
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -49,22 +49,22 @@ public class ReviewController {
         }
     }
 
-    @GetMapping("reviews/list")
-    public ResponseEntity<?> getAllReviews(){
+    @GetMapping("/reviews")
+    public ResponseEntity<?> getAllReviews() {
         return new ResponseEntity<>(
                 reviews.getAllReviews(),
                 HttpStatus.OK
         );
     }
 
-    @GetMapping("reviews/{reviewID}")
-    public ResponseEntity<?> getReview(@PathVariable Long reviewID){
-        try{
+    @GetMapping("/reviews/{id}")
+    public ResponseEntity<?> getReview(@PathVariable Long id) {
+        try {
             return new ResponseEntity<>(
-                    reviews.getReviewByID(reviewID),
+                    reviews.getReviewByID(id),
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST

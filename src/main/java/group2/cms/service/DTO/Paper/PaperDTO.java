@@ -7,17 +7,17 @@ import lombok.*;
 import java.util.List;
 
 @Builder(toBuilder = true)
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @ToString
 @Getter
 public class PaperDTO extends EntityDTO<Paper> {
-    private Long id;
-    private String title;
-    private String paperAbstract;
+    private final Long id;
+    private final String title;
+    private final String paperAbstract;
 
     @Singular
-    private List<Long> authorIDs;
+    private final List<Long> authorIDs;
 
     @Singular
-    private List<String> keywords;
+    private final List<String> keywords;
 }

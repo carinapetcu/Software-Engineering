@@ -15,9 +15,9 @@ public class CoChairController {
     @Autowired
     private CoChairService coChairService;
 
-    @PostMapping("coChairs/add")
-    public ResponseEntity<?> addCoChair(@RequestBody CoChairRequest request){
-        try{
+    @PostMapping("/co_chair")
+    public ResponseEntity<?> addCoChair(@RequestBody CoChairRequest request) {
+        try {
             var newCoChair = coChairService.addCoChair(
                     request.getUserID(),
                     request.getAffiliation(),
@@ -27,7 +27,7 @@ public class CoChairController {
                     newCoChair,
                     HttpStatus.OK
             );
-        } catch (BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -35,7 +35,7 @@ public class CoChairController {
         }
     }
 
-    @PostMapping("coChairs/update")
+    @PutMapping("/co_chair")
     public ResponseEntity<?> updateCoChair(@RequestBody CoChairRequest request) {
         try {
             var affiliation = request.getAffiliation();
@@ -57,15 +57,15 @@ public class CoChairController {
         }
     }
 
-    @DeleteMapping("coChairs/delete")
-    public ResponseEntity<?> deleteCoChair(@RequestBody CoChairRequest request){
-        try{
-            coChairService.deleteCoChair(request.getUserID());
+    @DeleteMapping("/co_chair/{id}")
+    public ResponseEntity<?> deleteCoChair(@PathVariable Long id) {
+        try {
+            coChairService.deleteCoChair(id);
             return new ResponseEntity<>(
                     "CoChair deleted",
                     HttpStatus.OK
             );
-        } catch (BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -73,22 +73,22 @@ public class CoChairController {
         }
     }
 
-    @GetMapping("coChairs/list")
-    public ResponseEntity<?> getCoChairs(){
+    @GetMapping("/co_chairs")
+    public ResponseEntity<?> getCoChairs() {
         return new ResponseEntity<>(
                 coChairService.getAllCoChairs(),
                 HttpStatus.OK
         );
     }
 
-    @GetMapping("coChairs/list/{id}")
-    public ResponseEntity<?> getCoChair(@PathVariable Long id){
-        try{
+    @GetMapping("/co_chair/{id}")
+    public ResponseEntity<?> getCoChair(@PathVariable Long id) {
+        try {
             return new ResponseEntity<>(
                     coChairService.getCoChairById(id),
                     HttpStatus.OK
             );
-        }catch (BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
