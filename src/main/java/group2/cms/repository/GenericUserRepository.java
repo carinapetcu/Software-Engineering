@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Optional;
 
 @NoRepositoryBean
-public interface GenericUserRepository<T extends CMSUser> extends JpaRepository<T, Long> {
+public interface GenericUserRepository<T extends BaseEntity<Long>> extends JpaRepository<T, Long> {
     Boolean existsByUsername(String username);
 
     Boolean existsByEmail(String email);

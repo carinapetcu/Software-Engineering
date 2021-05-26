@@ -13,7 +13,6 @@ import group2.cms.service.DTO.CoChair.CoChairResponse;
 import group2.cms.service.DTO.CoChair.CoChairsResponse;
 import group2.cms.service.DTO.Conference.ConferenceRequest;
 import group2.cms.service.DTO.Conference.ConferenceResponse;
-import group2.cms.service.DTO.Conference.ConferenceDTOConverter;
 import group2.cms.service.DTO.Conference.ConferencesResponse;
 import group2.cms.service.DTO.PCMember.PCMemberResponse;
 import group2.cms.service.DTO.PCMember.PCMembersResponse;
@@ -22,15 +21,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class ConferenceService {
-    @Autowired
-    private ConferenceDTOConverter conferenceDTOConverter;
-
     @Autowired
     private ConferenceRepository conferenceRepo;
 
@@ -72,43 +66,36 @@ public class ConferenceService {
         }
     }
 
-    public void deleteConference(Long conferenceID) {
-        try {
-            conferenceRepo.deleteById(conferenceID);
-        } catch (EmptyResultDataAccessException | IllegalArgumentException e) {
-            throw new InvalidIDException("Invalid conferenceID: " + conferenceID);
-        }
-    }
-
-    public ConferenceResponse updateConference(ConferenceResponse conferenceResponse) {
-        var conferenceData = conferenceDTOConverter.dtoToEntity(conferenceResponse);
-        var id = conferenceData.getId();
-        var conf = conferenceRepo.findById(id).orElseThrow(
-                () -> new InvalidIDException("Invalid conference ID:" + id)
-        );
-        var name = conferenceData.getName();
-        var edition = conferenceData.getEdition();
-        var startDate = conferenceData.getStartDate();
-        var endDate = conferenceData.getEndDate();
-
-        if (name != null) conf.setName(name);
-        if (edition != null) conf.setEdition(edition);
-        if (startDate != null) conf.setStartDate(startDate);
-        if (endDate != null) conf.setEndDate(endDate);
-
-        return conferenceDTOConverter.entityToDto(conferenceRepo.save(conf));
-    }
 
     public ConferenceResponse getById(Long conferenceID) {
         var conference = conferenceRepo.findById(conferenceID).orElseThrow(
                 () -> new InvalidIDException("Invalid conference ID: " + conferenceID)
         );
-        return conferenceDTOConverter.entityToDto(conference);
+        return ConferenceResponse.builder()
+                .id(conferenceID)
+                .edition(conference.getEdition())
+                .startDate(conference.getStartDate())
+                .endDate(conference.getEndDate())
+                .name(conference.getName())
+                .description(conference.getDescription())
+                .build();
     }
 
     public ConferencesResponse getAll() {
         try {
-            return conferenceDTOConverter.entitiesToDTO(conferenceRepo.findAll());
+            var res = new ConferencesResponse();
+            conferenceRepo.findAll()
+                    .forEach((c) -> res.addDTO(
+                            ConferenceResponse.builder()
+                                    .id(c.getId())
+                                    .edition(c.getEdition())
+                                    .startDate(c.getStartDate())
+                                    .endDate(c.getEndDate())
+                                    .name(c.getName())
+                                    .description(c.getDescription())
+                                    .build()
+                    ));
+            return res;
         } catch (Exception e) {
             throw new ServerException(e.getMessage());
         }

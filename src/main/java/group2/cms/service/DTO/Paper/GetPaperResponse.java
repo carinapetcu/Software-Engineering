@@ -6,5 +6,5 @@ import lombok.*;
 @Getter
 public class GetPaperResponse{
     private final String title;
-    private final String abstract;
+    private final String paperAbstract;
 }
