@@ -3,15 +3,16 @@ package group2.cms.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @Data
 @NoArgsConstructor
-//@AllArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 //@ToString
-public class Section {
+public class Section extends BaseEntity<Serializable> {
 
     @Id
     @GeneratedValue
