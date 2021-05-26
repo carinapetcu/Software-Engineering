@@ -9,10 +9,5 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AuthorRepository extends GenericUserRepository<Author> {
-    List<Author> findAuthorsByPaper(Paper paper);
-
-    Optional<Author> findAuthorByUsername(String username);
-
-    Optional<Author> findAuthorByEmail(String email);
+public interface AuthorRepository extends JpaRepository<Author,Long> {
 }

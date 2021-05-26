@@ -5,14 +5,20 @@ import group2.cms.service.DTO.Login.LoginRequest;
 import group2.cms.service.DTO.SignUp.SignUpRequest;
 import group2.cms.service.UserService;
 import org.apache.catalina.Server;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
 public class UserController {
+
+    @Autowired
     private UserService service;
 
     @PostMapping("/login")
@@ -40,6 +46,7 @@ public class UserController {
             );
         }
     }
+
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignUpRequest req) {
