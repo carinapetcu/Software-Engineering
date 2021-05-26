@@ -17,7 +17,6 @@ import java.util.Set;
 //@ToString
 public class Paper extends BaseEntity<Long>{
 
-
     private String title;
 
     private String paperAbstract;
