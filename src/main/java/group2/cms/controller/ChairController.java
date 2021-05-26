@@ -1,8 +1,8 @@
 package group2.cms.controller;
 
-import group2.cms.service.DTO.ChairRequest;
 import group2.cms.exceptions.BackendException;
 import group2.cms.service.ChairService;
+import group2.cms.service.DTO.Chair.ChairDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,19 +16,15 @@ public class ChairController {
     @Autowired
     private ChairService chairs;
 
-    @PostMapping("chairs/add")
-    public ResponseEntity<?> addChair(@RequestBody ChairRequest request){
-        try{
-            var newChair = chairs.addChair(
-                    request.getUserID(),
-                    request.getAffiliation(),
-                    request.getWebsite()
-            );
+    @PostMapping("/chair")
+    public ResponseEntity<?> addChair(@RequestBody ChairDTO request) {
+        try {
+            var newChair = chairs.addChair(request);
             return new ResponseEntity<>(
                     newChair,
                     HttpStatus.OK
             );
-        } catch (BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -36,7 +32,7 @@ public class ChairController {
         }
     }
 
-    @PostMapping("chairs/update")
+    @PutMapping("/chair")
     public ResponseEntity<?> updateChair(@RequestBody ChairRequest request) {
         try {
             var affiliation = request.getAffiliation();
@@ -58,15 +54,15 @@ public class ChairController {
         }
     }
 
-    @DeleteMapping("chairs/delete")
-    public ResponseEntity<?> deleteChair(@RequestBody ChairRequest request){
-        try{
-            chairs.deleteChair(request.getUserID());
+    @DeleteMapping("/chair/{id}")
+    public ResponseEntity<?> deleteChair(@PathVariable Long id) {
+        try {
+            chairs.deleteChair(id);
             return new ResponseEntity<>(
                     "Chair deleted",
                     HttpStatus.OK
             );
-        } catch (BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -74,22 +70,22 @@ public class ChairController {
         }
     }
 
-    @GetMapping("chairs/list")
-    public ResponseEntity<?> getChairs(){
+    @GetMapping("/chairs")
+    public ResponseEntity<?> getChairs() {
         return new ResponseEntity<>(
                 chairs.getAllChairs(),
                 HttpStatus.OK
         );
     }
 
-    @GetMapping("chairs/list/{id}")
-    public ResponseEntity<?> getChair(@PathVariable Long id){
-        try{
+    @GetMapping("/chair/{id}")
+    public ResponseEntity<?> getChair(@PathVariable Long id) {
+        try {
             return new ResponseEntity<>(
                     chairs.getChairById(id),
                     HttpStatus.OK
             );
-        }catch (BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST

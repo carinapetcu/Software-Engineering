@@ -9,19 +9,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class ConferenceController{
+public class ConferenceController {
     @Autowired
     private ConferenceService conferences;
 
-    @PostMapping("conferences/add")
-    public ResponseEntity<?> addConference(@RequestBody ConferenceDTO conferenceDTO){
-        try{
+    @PostMapping("/conference")
+    public ResponseEntity<?> addConference(@RequestBody ConferenceDTO conferenceDTO) {
+        try {
             var addedConference = conferences.addConference(conferenceDTO);
             return new ResponseEntity<>(
                     addedConference,
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -29,15 +29,15 @@ public class ConferenceController{
         }
     }
 
-    @PutMapping("conferences/update")
-    public ResponseEntity<?> updateConference(@RequestBody ConferenceDTO conferenceDTO){
-        try{
+    @PutMapping("/conference")
+    public ResponseEntity<?> updateConference(@RequestBody ConferenceDTO conferenceDTO) {
+        try {
             var updatedConference = conferences.updateConference(conferenceDTO);
             return new ResponseEntity<>(
                     updatedConference,
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -46,15 +46,15 @@ public class ConferenceController{
     }
 
 
-    @DeleteMapping("conferences/delete/{conferenceID}")
-    public ResponseEntity<?> deleteConference(@PathVariable Long conferenceID){
-        try{
-            conferences.deleteConference(conferenceID);
+    @DeleteMapping("/conference/{id}")
+    public ResponseEntity<?> deleteConference(@PathVariable Long id) {
+        try {
+            conferences.deleteConference(id);
             return new ResponseEntity<>(
                     "Conference deleted",
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -62,22 +62,22 @@ public class ConferenceController{
         }
     }
 
-    @GetMapping("conferences/list")
-    public ResponseEntity<?> getAllConferences(){
+    @GetMapping("/conferences")
+    public ResponseEntity<?> getAllConferences() {
         return new ResponseEntity<>(
                 conferences.getAll(),
                 HttpStatus.OK
         );
     }
 
-    @GetMapping("conferences/{confID}")
-    public ResponseEntity<?> getConference(@PathVariable Long confID){
-        try{
+    @GetMapping("/conference/{id}")
+    public ResponseEntity<?> getConference(@PathVariable Long id) {
+        try {
             return new ResponseEntity<>(
-                    conferences.getById(confID),
+                    conferences.getById(id),
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST

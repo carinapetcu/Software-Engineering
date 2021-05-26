@@ -56,10 +56,9 @@ public class AuthorService {
         return converter.entitiesToDTO(authorRepository.findAll());
     }
 
-    public AuthorsDTO getAuthorsOfPaper(AuthorDTO authorDTO){
-        var paperID = converter.dtoToEntity(authorDTO).getPaper().getId();
-        var paper = paperRepository.findById(paperID).orElseThrow(
-                () -> new InvalidIDException("Invalid Paper ID: " + paperID)
+    public AuthorsDTO getAuthorsOfPaper(Long paperId){
+        var paper = paperRepository.findById(paperId).orElseThrow(
+                () -> new InvalidIDException("Invalid Paper ID: " + paperId)
         );
         return converter.entitiesToDTO(authorRepository.findAuthorsByPaper(paper));
     }

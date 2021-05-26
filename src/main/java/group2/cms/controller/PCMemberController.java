@@ -16,9 +16,9 @@ public class PCMemberController {
     @Autowired
     private PCMemberService pcMembers;
 
-    @PostMapping("pcmembers/add")
-    public ResponseEntity<?> addPCMember(@RequestBody PCMemberRequest request){
-        try{
+    @PostMapping("/pc_members")
+    public ResponseEntity<?> addPCMember(@RequestBody PCMemberRequest request) {
+        try {
             var newPCMember = pcMembers.addPCMember(
                     request.getUserID(),
                     request.getAffiliation(),
@@ -27,7 +27,7 @@ public class PCMemberController {
                     newPCMember,
                     HttpStatus.OK
             );
-        }catch (BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -35,21 +35,22 @@ public class PCMemberController {
         }
     }
 
-    @PostMapping("pcmembers/update")
-    public ResponseEntity<?> updatePCMember(@RequestBody PCMemberRequest request){
-        try{
-            var affiliation = request.getAffiliation();;
+    @PutMapping("/pc_member")
+    public ResponseEntity<?> updatePCMember(@RequestBody PCMemberRequest request) {
+        try {
+            var affiliation = request.getAffiliation();
+            ;
             var website = request.getWebsite();
             var updatedPCMember = pcMembers.updatePCMember(
                     request.getUserID(),
-                    affiliation.isBlank()? Optional.empty() : Optional.of(affiliation),
-                    website.isBlank()? Optional.empty() : Optional.of(website)
+                    affiliation.isBlank() ? Optional.empty() : Optional.of(affiliation),
+                    website.isBlank() ? Optional.empty() : Optional.of(website)
             );
             return new ResponseEntity<>(
                     updatedPCMember,
                     HttpStatus.OK
             );
-        }catch (BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -57,15 +58,15 @@ public class PCMemberController {
         }
     }
 
-    @DeleteMapping("pcmembers/delete")
-    public ResponseEntity<?> deletePCMember(@RequestBody PCMemberRequest request){
-        try{
-           pcMembers.deletePCMember(request.getUserID());
-           return new ResponseEntity<>(
-                   "PCMember deleted",
-                   HttpStatus.OK
-           );
-        }catch(BackendException e){
+    @DeleteMapping("/pc_member/{id}")
+    public ResponseEntity<?> deletePCMember(@PathVariable Long id) {
+        try {
+            pcMembers.deletePCMember(id);
+            return new ResponseEntity<>(
+                    "PCMember deleted",
+                    HttpStatus.OK
+            );
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -73,37 +74,36 @@ public class PCMemberController {
         }
     }
 
-    @GetMapping("pcmembers/list")
-    public ResponseEntity<?> getPCMembers(){
+    @GetMapping("/pc_members")
+    public ResponseEntity<?> getPCMembers() {
         return new ResponseEntity<>(
                 pcMembers.getAllPCMembers(),
                 HttpStatus.OK
         );
     }
 
-    @GetMapping("pcmembers/list/affiliation/{affiliation}")
-    public ResponseEntity<?> getPCMembersOfAffiliation(@PathVariable String affiliation){
+    @GetMapping("/pc_members/{affiliation}")
+    public ResponseEntity<?> getPCMembersOfAffiliation(@PathVariable String affiliation) {
         return new ResponseEntity<>(
                 pcMembers.getPCMembersByAffiliation(affiliation),
                 HttpStatus.OK
         );
     }
 
-    @GetMapping("pcmembers/list/{id}")
-    public ResponseEntity<?> getPCMember(@PathVariable Long id){
-        try{
+    @GetMapping("/pc_member/{id}")
+    public ResponseEntity<?> getPCMember(@PathVariable Long id) {
+        try {
             return new ResponseEntity<>(
                     pcMembers.getPCMemberByID(id),
                     HttpStatus.OK
             );
-        }catch (BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
-              e.getMessage(),
-              HttpStatus.BAD_REQUEST
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST
             );
         }
     }
-
 
 
 }

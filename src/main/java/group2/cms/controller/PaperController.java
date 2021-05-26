@@ -29,10 +29,10 @@ public class PaperController {
         }
     }
 
-    @DeleteMapping("/paper/{paperId}")
-    public ResponseEntity<?> deletePaper(@PathVariable Long paperId){
+    @DeleteMapping("/paper/{id}")
+    public ResponseEntity<?> deletePaper(@PathVariable Long id){
         try{
-            paperService.deletePaper(paperId);
+            paperService.deletePaper(id);
             return new ResponseEntity<>(
                     "Paper deleted",
                     HttpStatus.OK
@@ -54,11 +54,11 @@ public class PaperController {
         );
     }
 
-    @GetMapping("/paper/{paperId}")
-    public ResponseEntity<?> getPaper(@PathVariable Long paperId){
+    @GetMapping("/paper/{id}")
+    public ResponseEntity<?> getPaper(@PathVariable Long id){
         try{
             return new ResponseEntity<>(
-                    paperService.getPaperById(paperId),
+                    paperService.getPaperById(id),
                     HttpStatus.OK
             );
         }catch(BackendException e){
@@ -69,7 +69,7 @@ public class PaperController {
         }
     }
 
-    @GetMapping("/paper/title/{title}")
+    @GetMapping("/paper/{title}")
     public ResponseEntity<?> getPaperByTitle(@PathVariable String title){
         try{
             return new ResponseEntity<>(

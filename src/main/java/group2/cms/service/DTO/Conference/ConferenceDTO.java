@@ -11,9 +11,9 @@ import java.time.LocalDate;
 @Getter
 @Builder(toBuilder = true)
 public class ConferenceDTO extends EntityDTO<Conference> {
-    private Long id;
-    private String name;
-    private String edition;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private final Long id;
+    private final String name;
+    private final String edition;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
 }

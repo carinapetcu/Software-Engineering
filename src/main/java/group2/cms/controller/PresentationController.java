@@ -14,9 +14,9 @@ public class PresentationController {
     @Autowired
     private PresentationService presentations;
 
-    @PostMapping("presentations/add")
-    public ResponseEntity<?> addPresentations(@RequestBody PresentationRequest presentationRequest){
-        try{
+    @PostMapping("/presentation")
+    public ResponseEntity<?> addPresentations(@RequestBody PresentationRequest presentationRequest) {
+        try {
             var addedPresentation = presentations.addPresentation(presentationRequest.getPresentationID(),
                     presentationRequest.getPaper(),
                     presentationRequest.getSection(),
@@ -27,7 +27,7 @@ public class PresentationController {
                     addedPresentation,
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -35,15 +35,15 @@ public class PresentationController {
         }
     }
 
-    @DeleteMapping("presentations/delete")
-    public ResponseEntity<?> deletePresentations(@RequestBody PresentationRequest presentationRequest){
-        try{
-            presentations.deletePresentation(presentationRequest.getPresentationID());
+    @DeleteMapping("/presentation/{id}")
+    public ResponseEntity<?> deletePresentations(@PathVariable Long id) {
+        try {
+            presentations.deletePresentation(id);
             return new ResponseEntity<>(
                     "Presentation deleted",
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -51,22 +51,22 @@ public class PresentationController {
         }
     }
 
-    @GetMapping("presentations/list")
-    public ResponseEntity<?> getAllPresentations(){
+    @GetMapping("/presentation")
+    public ResponseEntity<?> getAllPresentations() {
         return new ResponseEntity<>(
                 presentations.getAllPresentations(),
                 HttpStatus.OK
         );
     }
 
-    @GetMapping("presentations/{presentationID}")
-    public ResponseEntity<?> getPresentation(@PathVariable Long presentationID){
-        try{
+    @GetMapping("/presentations/{id}")
+    public ResponseEntity<?> getPresentation(@PathVariable Long id) {
+        try {
             return new ResponseEntity<>(
-                    presentations.getPresentationByID(presentationID),
+                    presentations.getPresentationByID(id),
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
