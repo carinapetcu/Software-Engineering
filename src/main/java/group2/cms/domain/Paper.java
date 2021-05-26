@@ -9,6 +9,7 @@ import java.util.Set;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(
@@ -35,6 +36,10 @@ public class Paper extends BaseEntity<Long>{
         this.authorList = authorList;
         this.keywordSet = keywordSet;
     }
+
+    @OneToMany
+    @PrimaryKeyJoinColumn
+    private Set<PaperFile> files;
 
 //private List<String> keywords; TODO: investigate how to store keywords
 }
