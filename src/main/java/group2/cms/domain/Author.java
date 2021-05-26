@@ -1,37 +1,26 @@
 package group2.cms.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @Data
-//@AllArgsConstructor
-//@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-//@ToString(callSuper = true)
-public class Author extends CMSUser{
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class Author extends BaseEntity<Long> {
     @ManyToOne
     protected Paper paper;
 
-    public Author() {
-    }
+    @OneToOne
+    private CMSUser user;
 
-    public Author(CMSUser paperUploader, Paper uploadedPaper) {
-        super(paperUploader.getFullName(),
-                paperUploader.getEmail(),
-                paperUploader.getUsername(),
-                paperUploader.getPassword());
-        this.authority = Authority.Author;
-        this.paper = uploadedPaper;
-    }
-
-    public Author(CMSUser user){
-        super(user.getFullName(),
-                user.getEmail(),
-                user.getUsername(),
-                user.getPassword());
-        this.authority = Authority.Author;
+    public Author(CMSUser user) {
+        this.user = user;
+        this.user.setAuthority(Authority.Author);
     }
 }

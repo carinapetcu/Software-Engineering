@@ -1,14 +1,7 @@
 package group2.cms.service.DTO.Chair;
 
-import group2.cms.domain.Author;
-import group2.cms.domain.Chair;
-import group2.cms.domain.PCMember;
 import group2.cms.domain.CMSUser;
-import group2.cms.domain.Paper;
-import group2.cms.service.DTO.Author.AuthorDTO;
-import group2.cms.service.DTO.Author.AuthorsDTO;
 import group2.cms.service.DTO.DTOConverter;
-import group2.cms.service.DTO.EntitiesDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;

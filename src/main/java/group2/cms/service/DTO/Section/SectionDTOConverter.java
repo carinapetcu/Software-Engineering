@@ -1,9 +1,7 @@
 package group2.cms.service.DTO.Section;
 
-import group2.cms.domain.Chair;
 import group2.cms.domain.Section;
 import group2.cms.service.DTO.DTOConverter;
-import group2.cms.service.DTO.EntitiesDTO;
 
 import java.util.Collection;
 

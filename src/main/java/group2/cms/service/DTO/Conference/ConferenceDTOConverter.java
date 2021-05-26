@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 
 @Component
-public class ConferenceDTOConverter implements DTOConverter<Conference, ConferenceDTO> {
+public class ConferenceDTOConverter implements DTOConverter<Conference, ConferenceResponse> {
     @Override
-    public Conference dtoToEntity(ConferenceDTO dto) {
+    public Conference dtoToEntity(ConferenceResponse dto) {
        var conference = new Conference(
                 dto.getName(),
                 dto.getEdition(),
@@ -22,8 +22,8 @@ public class ConferenceDTOConverter implements DTOConverter<Conference, Conferen
     }
 
     @Override
-    public ConferenceDTO entityToDto(Conference conference) {
-        return ConferenceDTO.builder()
+    public ConferenceResponse entityToDto(Conference conference) {
+        return ConferenceResponse.builder()
                 .id(conference.getId())
                 .name(conference.getName())
                 .edition(conference.getEdition())
@@ -33,8 +33,8 @@ public class ConferenceDTOConverter implements DTOConverter<Conference, Conferen
     }
 
     @Override
-    public ConferencesDTO entitiesToDTO(Collection<Conference> conferences) {
-        var conferencesDTO = new ConferencesDTO();
+    public ConferencesResponse entitiesToDTO(Collection<Conference> conferences) {
+        var conferencesDTO = new ConferencesResponse();
 
         conferences.stream()
                 .map(this::entityToDto)

@@ -1,7 +1,6 @@
 package group2.cms.domain;
 
 public enum Authority {
-    Default,
     Listener,
     Author,
     PCMember,

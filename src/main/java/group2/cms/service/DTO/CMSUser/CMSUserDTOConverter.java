@@ -14,9 +14,10 @@ public class CMSUserDTOConverter implements DTOConverter<CMSUser, CMSUserDTO> {
                 dto.getFullName(),
                 dto.getEmail(),
                 dto.getUsername(),
-                dto.getPassword()
+                dto.getPassword(),
+                null
         );
-        if(dto.getId() != null)
+        if (dto.getId() != null)
             user.setId(dto.getId());
         return user;
     }

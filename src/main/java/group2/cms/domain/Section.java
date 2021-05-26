@@ -5,13 +5,13 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-//@ToString
+@EqualsAndHashCode(callSuper = false)
 public class Section extends BaseEntity<Serializable> {
 
     @Id
@@ -27,4 +27,7 @@ public class Section extends BaseEntity<Serializable> {
     @ManyToOne
     @PrimaryKeyJoinColumn
     private PCMember sessionChair;
+
+    @OneToMany
+    private Set<CMSUser> listeners;
 }
