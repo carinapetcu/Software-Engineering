@@ -1,5 +1,6 @@
 package group2.cms.controller;
 
+import group2.cms.service.DTO.Review.ReviewDTO;
 import group2.cms.service.DTO.ReviewRequest;
 import group2.cms.exceptions.BackendException;
 import group2.cms.service.ReviewService;
@@ -14,18 +15,15 @@ public class ReviewController {
     private ReviewService reviews;
 
     @PostMapping("reviews/add")
-    public ResponseEntity<?> addReviews(@RequestBody ReviewRequest reviewRequest){
-        try{
-            var addedReview = reviews.addReview(reviewRequest.getReviewID(),
-                    reviewRequest.getPcMember(),
-                    reviewRequest.getPaper(),
-                    reviewRequest.getFeedback(),
-                    reviewRequest.getResult());
+    public ResponseEntity<?> addReviews(@RequestBody ReviewDTO reviewRequest) {
+        try {
+
+            var addedReview = reviews.addReview(reviewRequest);
             return new ResponseEntity<>(
                     addedReview,
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -34,14 +32,14 @@ public class ReviewController {
     }
 
     @DeleteMapping("reviews/delete")
-    public ResponseEntity<?> deleteReviews(@RequestBody ReviewRequest reviewRequest){
-        try{
+    public ResponseEntity<?> deleteReviews(@RequestBody ReviewRequest reviewRequest) {
+        try {
             reviews.deleteReview(reviewRequest.getReviewID());
             return new ResponseEntity<>(
                     "Review deleted",
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
@@ -50,7 +48,7 @@ public class ReviewController {
     }
 
     @GetMapping("reviews/list")
-    public ResponseEntity<?> getAllReviews(){
+    public ResponseEntity<?> getAllReviews() {
         return new ResponseEntity<>(
                 reviews.getAllReviews(),
                 HttpStatus.OK
@@ -58,13 +56,13 @@ public class ReviewController {
     }
 
     @GetMapping("reviews/{reviewID}")
-    public ResponseEntity<?> getReview(@PathVariable Long reviewID){
-        try{
+    public ResponseEntity<?> getReview(@PathVariable Long reviewID) {
+        try {
             return new ResponseEntity<>(
                     reviews.getReviewByID(reviewID),
                     HttpStatus.OK
             );
-        }catch(BackendException e){
+        } catch (BackendException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
