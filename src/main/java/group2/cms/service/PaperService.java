@@ -1,6 +1,7 @@
 package group2.cms.service;
 
 import group2.cms.domain.Review;
+import group2.cms.repository.ConferenceRepository;
 import group2.cms.repository.PaperRepository;
 import group2.cms.repository.ReviewRepository;
 import group2.cms.service.DTO.Paper.PaperToReviewResponse;
@@ -15,6 +16,7 @@ import group2.cms.repository.AuthorRepository;
 import group2.cms.exceptions.ServerException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Service
@@ -27,6 +29,9 @@ public class PaperService {
 
     @Autowired
     private AuthorRepository authorRepo;
+
+    @Autowired
+    private ConferenceRepository conferenceRepo;
 
     public PapersToReviewResponse getPapersForReview(Long userId) {
         var res = new PapersToReviewResponse();
@@ -59,6 +64,11 @@ public class PaperService {
     }
 
     public void addPaperToConference(Long confId, PaperRequest data) {
+        var conference = conferenceRepo.findById(confId)
+                .orElseThrow(() -> new InvalidIDException("Conference with given id doesn't exist."));
+        if (conference.getPapers() == null) {
+            conference.setPapers(new HashSet<>());
+        }
         var paper = new Paper();
         paper.setTitle(data.getTitle());
         paper.setPaperAbstract(data.getPaperAbstract());
@@ -76,8 +86,9 @@ public class PaperService {
                                     );
                         }
                 );
+        conference.getPapers().add(paper);
         try {
-            paperRepo.save(paper);
+            conferenceRepo.save(conference);
         } catch (Exception e) {
             throw new ServerException(e.getMessage());
         }

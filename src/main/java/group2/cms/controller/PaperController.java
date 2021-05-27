@@ -55,6 +55,12 @@ public class PaperController {
     public ResponseEntity<?> addPaper(@PathVariable Long conferenceId, @RequestBody PaperRequest req) {
         try {
             service.addPaperToConference(conferenceId, req);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (InvalidIDException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND
+            );
         } catch (ServerException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
