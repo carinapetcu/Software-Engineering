@@ -155,4 +155,30 @@ public class PaperService {
             throw new ServerException(e.getMessage());
         }
     }
+
+    public IsPaperReviewableResponse isPaperReviewable(Long paperId, Long userId) {
+        var res = new IsPaperReviewableResponse();
+        boolean exists = false;
+
+        try {
+            for (Review r : reviewRepo.findAll()) {
+                if (Objects.equals(r.getPaper().getId(), paperId) &&
+                        Objects.equals(r.getPcMember()
+                                .getAuthor()
+                                .getUser()
+                                .getId(), userId)) {
+                    exists = true;
+                    res.setCanReview(r.getResult() == null);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            throw new ServerException(e.getMessage());
+        }
+        if (!exists) {
+            throw new InvalidIDException("Paper or user not found.");
+        }
+
+        return res;
+    }
 }

@@ -109,7 +109,7 @@ public class PaperController {
         }
     }
 
-    @PutMapping("/papers/to_review")
+    @PutMapping("/papers")
     public ResponseEntity<?> setPapersToReview(@RequestBody PaperToReviewCountRequest req) {
         try {
             service.setPapersToReview(req);
@@ -127,4 +127,21 @@ public class PaperController {
         }
     }
 
+    @GetMapping("/paper/{id}/{userId}")
+    public ResponseEntity<?> isPaperReviewable(@PathVariable Long id, @PathVariable Long userId) {
+        try {
+            var res = service.isPaperReviewable(id, userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (InvalidIDException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND
+            );
+        } catch (ServerException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
 }
