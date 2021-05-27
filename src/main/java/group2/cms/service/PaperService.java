@@ -4,14 +4,11 @@ import group2.cms.domain.Review;
 import group2.cms.repository.ConferenceRepository;
 import group2.cms.repository.PaperRepository;
 import group2.cms.repository.ReviewRepository;
-import group2.cms.service.DTO.Paper.PaperToReviewResponse;
-import group2.cms.service.DTO.Paper.PapersToReviewResponse;
+import group2.cms.service.DTO.Paper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import group2.cms.service.DTO.Paper.PaperResponse;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.domain.Paper;
-import group2.cms.service.DTO.Paper.PaperRequest;
 import group2.cms.repository.AuthorRepository;
 import group2.cms.exceptions.ServerException;
 
@@ -92,5 +89,22 @@ public class PaperService {
         } catch (Exception e) {
             throw new ServerException(e.getMessage());
         }
+    }
+
+
+    public PapersWithAuthorsResponse getPapersFromConference(Long conferenceId) {
+        var conference = conferenceRepo.findById(conferenceId)
+                .orElseThrow(() -> new InvalidIDException("Conference with given id doesn't exist."));
+        var res = new PapersWithAuthorsResponse();
+        conference.getPapers()
+                .stream()
+                .map(paper -> PaperWithAuthorsResponse.builder()
+                        .id(paper.getId())
+                        .title(paper.getTitle())
+                        .authors(paper.getAuthorList())
+                        .build())
+                .forEach(res::addDTO);
+
+        return res;
     }
 }

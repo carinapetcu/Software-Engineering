@@ -69,4 +69,20 @@ public class PaperController {
         }
     }
 
+    @PostMapping("/papers/{conferenceId}")
+    public ResponseEntity<?> getPapersFromConference(@PathVariable Long conferenceId) {
+        try {
+            var res = service.getPapersFromConference(conferenceId);
+            return new ResponseEntity<>(
+                    res,
+                    HttpStatus.OK
+            );
+        }catch (ServerException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
 }
