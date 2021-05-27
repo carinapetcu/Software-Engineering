@@ -24,10 +24,10 @@ public class Section extends BaseEntity<Serializable> {
     private LocalDate endDate;
     private String theme;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private PCMember sessionChair;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<CMSUser> listeners;
 }

@@ -12,12 +12,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Author extends BaseEntity<Long> {
-    @ManyToOne
+public class Author extends BaseEntity<Long>{
+
+    @ManyToOne(cascade = CascadeType.ALL)
     protected Paper paper;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @OneToOne(cascade = CascadeType.ALL)
     private CMSUser user;
 
     public Author(CMSUser user) {

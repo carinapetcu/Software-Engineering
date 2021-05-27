@@ -9,13 +9,13 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class PCMember extends BaseEntity<Long> {
+public class PCMember extends BaseEntity<Long>{
+
     private String affiliation;
     private String webPage;
     private int maxPapersToReview = 0;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @OneToOne(cascade = CascadeType.ALL)
     private Author author;
 
     public PCMember(Author author, String affiliation) {

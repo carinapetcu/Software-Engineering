@@ -6,10 +6,7 @@ import group2.cms.domain.Conference;
 import group2.cms.domain.PCMember;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.exceptions.ServerException;
-import group2.cms.repository.ConferenceRepository;
-import group2.cms.repository.PCMemberRepository;
-import group2.cms.repository.PaperRepository;
-import group2.cms.repository.UserRepository;
+import group2.cms.repository.*;
 import group2.cms.service.DTO.CoChair.CoChairResponse;
 import group2.cms.service.DTO.CoChair.CoChairsResponse;
 import group2.cms.service.DTO.Conference.ConferenceRequest;
@@ -35,6 +32,12 @@ public class ConferenceService {
     @Autowired
     private UserRepository userRepo;
 
+    @Autowired
+    private PCMemberRepository pcMemberRepo;
+
+    @Autowired
+    private AuthorRepository authorRepo;
+
     public Long addConference(ConferenceRequest data) {
         var newConference = new Conference();
         newConference.setName(data.getName());
@@ -45,20 +48,16 @@ public class ConferenceService {
 
         var user = userRepo.findById(data.getUserId())
                 .orElseThrow(() -> new InvalidIDException("User does not exist."));
-
+        user.setAuthority(Authority.Chair);
         var author = new Author();
         author.setUser(user);
         var chair = new PCMember();
         chair.setAuthor(author);
         chair.setAffiliation("");
         chair.setWebPage("");
-        user.setAuthority(Authority.Chair);
 
         newConference.setChair(chair);
 
-        newConference.setCoChairs(new HashSet<>());
-        newConference.setPcMembers(new HashSet<>());
-        newConference.setSections(new HashSet<>());
         try {
             var conf = conferenceRepo.save(newConference);
             return conf.getId();

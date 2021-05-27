@@ -22,8 +22,7 @@ public class Conference extends BaseEntity<Long> {
     private LocalDate endDate;
     private String description; // TODO: check how string is put into SQL
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @OneToOne(cascade = CascadeType.ALL)
     private PCMember chair;
 
     @OneToMany(cascade = CascadeType.ALL)
