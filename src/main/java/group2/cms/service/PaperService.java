@@ -1,20 +1,22 @@
 package group2.cms.service;
 
+import group2.cms.domain.PCMember;
+import group2.cms.domain.Paper;
 import group2.cms.domain.Review;
+import group2.cms.exceptions.InvalidIDException;
+import group2.cms.exceptions.ServerException;
+import group2.cms.repository.AuthorRepository;
 import group2.cms.repository.ConferenceRepository;
 import group2.cms.repository.PaperRepository;
 import group2.cms.repository.ReviewRepository;
 import group2.cms.service.DTO.Paper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import group2.cms.exceptions.InvalidIDException;
-import group2.cms.domain.Paper;
-import group2.cms.repository.AuthorRepository;
-import group2.cms.exceptions.ServerException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class PaperService {
@@ -38,7 +40,7 @@ public class PaperService {
                         r -> Objects.equals(r.getPcMember()
                                 .getAuthor()
                                 .getUser()
-                                .getId(), userId)
+                                .getId(), userId) && r.getResult() == null
                 )
                 .map((Review::getPaper))
                 .map(p -> PaperToReviewResponse.builder()
@@ -106,5 +108,39 @@ public class PaperService {
                 .forEach(res::addDTO);
 
         return res;
+    }
+
+    public void shufflePapers(Long conferenceId) {
+        var conference = conferenceRepo.findById(conferenceId)
+                .orElseThrow(() -> new InvalidIDException("Conference with given id doesn't exist."));
+        var papers = new ArrayList<>(conference.getPapers());
+
+        var reviewers = conference.getPcMembers()
+                .stream()
+                .filter(pm -> pm.getMaxPapersToReview() > 0)
+                .collect(Collectors.toList());
+        for (PCMember reviewer : reviewers) {
+            if (papers.size() == 0) {
+                break;
+            }
+            var max = reviewer.getMaxPapersToReview();
+            while (max > 0) {
+                var index = (int) (Math.random() * (papers.size() - 1));
+                var review = new Review();
+                review.setPcMember(reviewer);
+                review.setPaper(conference.getPapers()
+                        .stream()
+                        .filter(p -> Objects.equals(p.getId(), papers.get(index).getId()))
+                        .collect(Collectors.toList())
+                        .get(0));
+                try {
+                    reviewRepo.save(review);
+                } catch (Exception e) {
+                    throw new ServerException(e.getMessage());
+                }
+                papers.remove(index);
+                max--;
+            }
+        }
     }
 }

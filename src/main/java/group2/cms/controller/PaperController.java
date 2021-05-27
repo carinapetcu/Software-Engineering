@@ -77,7 +77,24 @@ public class PaperController {
                     res,
                     HttpStatus.OK
             );
+        } catch (InvalidIDException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND
+            );
+        } catch (ServerException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
 
+    @GetMapping("/papers/shuffle/{conferenceId}")
+    public ResponseEntity<?> shufflePapers(@PathVariable Long conferenceId) {
+        try {
+            service.shufflePapers(conferenceId);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (InvalidIDException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
