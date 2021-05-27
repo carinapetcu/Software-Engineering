@@ -77,7 +77,13 @@ public class PaperController {
                     res,
                     HttpStatus.OK
             );
-        }catch (ServerException e) {
+
+        } catch (InvalidIDException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND
+            );
+        } catch (ServerException e) {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR
