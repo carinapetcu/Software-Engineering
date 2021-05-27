@@ -33,4 +33,7 @@ public class Conference extends BaseEntity<Long> {
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Section> sections;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Paper> papers;
 }
