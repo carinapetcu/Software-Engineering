@@ -13,6 +13,8 @@ import group2.cms.service.DTO.Conference.ConferencesResponse;
 import group2.cms.service.DTO.PCMember.PCMemberResponse;
 import group2.cms.service.DTO.PCMember.PCMembersResponse;
 import group2.cms.service.DTO.PCMemberRequest;
+import group2.cms.service.DTO.Reviewer.ReviewerResponse;
+import group2.cms.service.DTO.Reviewer.ReviewersResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -141,12 +143,12 @@ public class ConferenceService {
         return pcMembers;
     }
 
-    public PCMembersResponse getReviewersFromConference(Long conferenceId) {
+    public ReviewersResponse getReviewersFromConference(Long conferenceId) {
         var conference = conferenceRepo.findById(conferenceId).orElseThrow(
                 () -> new InvalidIDException("Invalid conference ID: " + conferenceId)
         );
 
-        var pcMembers = new PCMembersResponse();
+        var reviewers = new ReviewersResponse();
         conference.getPcMembers()
                 .stream()
                 .filter((pm) -> pm.getMaxPapersToReview() > 0)
@@ -160,15 +162,13 @@ public class ConferenceService {
                             }
                         });
                     });
-                    pcMembers.addDTO(PCMemberResponse.builder()
-                            .affiliation(pm.getAffiliation())
-                            .hasPaper(hasPaper.get())
-                            .email(user.getEmail())
+                    reviewers.addDTO(ReviewerResponse.builder()
                             .fullName(user.getFullName())
-                            .webPage(pm.getWebPage())
+                            .email(user.getEmail())
+                            .noOfPapersToReview(pm.getMaxPapersToReview())
                             .build());
                 });
-        return pcMembers;
+        return reviewers;
     }
 
 

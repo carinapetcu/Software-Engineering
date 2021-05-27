@@ -6,12 +6,11 @@ import javax.persistence.*;
 import java.io.File;
 import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
-@EqualsAndHashCode
 public class Review extends BaseEntity<Serializable> {
 
     @Id
