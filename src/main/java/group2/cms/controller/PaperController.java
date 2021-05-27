@@ -70,7 +70,7 @@ public class PaperController {
         }
     }
 
-    @PostMapping("/papers/{conferenceId}")
+    @GetMapping("/papers/{conferenceId}")
     public ResponseEntity<?> getPapersFromConference(@PathVariable Long conferenceId) {
         try {
             var res = service.getPapersFromConference(conferenceId);

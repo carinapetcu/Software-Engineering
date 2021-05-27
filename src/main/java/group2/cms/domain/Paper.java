@@ -29,12 +29,12 @@ public class Paper extends BaseEntity<Long>{
     @ManyToMany(targetEntity = Keyword.class)
     private Set<Keyword> keywordSet;
 
-    public Paper(String title, String paperAbstract, List<Author> authorList, Set<Keyword> keywordSet) {
-        this.title = title;
-        this.paperAbstract = paperAbstract;
-        this.authorList = authorList;
-        this.keywordSet = keywordSet;
-    }
+//    public Paper(String title, String paperAbstract, List<Author> authorList, Set<Keyword> keywordSet) {
+//        this.title = title;
+//        this.paperAbstract = paperAbstract;
+//        this.authorList = authorList;
+//        this.keywordSet = keywordSet;
+//    }
 
 //    @OneToMany
 //    @PrimaryKeyJoinColumn
