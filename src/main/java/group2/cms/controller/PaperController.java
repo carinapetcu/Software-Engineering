@@ -3,6 +3,7 @@ package group2.cms.controller;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.exceptions.ServerException;
 import group2.cms.service.DTO.Paper.PaperRequest;
+import group2.cms.service.DTO.Paper.PaperToReviewCountRequest;
 import group2.cms.service.PaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -94,6 +95,24 @@ public class PaperController {
     public ResponseEntity<?> shufflePapers(@PathVariable Long conferenceId) {
         try {
             service.shufflePapers(conferenceId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (InvalidIDException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND
+            );
+        } catch (ServerException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    @PutMapping("/papers/to_review")
+    public ResponseEntity<?> setPapersToReview(@RequestBody PaperToReviewCountRequest req) {
+        try {
+            service.setPapersToReview(req);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (InvalidIDException e) {
             return new ResponseEntity<>(

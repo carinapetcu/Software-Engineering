@@ -5,10 +5,7 @@ import group2.cms.domain.Paper;
 import group2.cms.domain.Review;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.exceptions.ServerException;
-import group2.cms.repository.AuthorRepository;
-import group2.cms.repository.ConferenceRepository;
-import group2.cms.repository.PaperRepository;
-import group2.cms.repository.ReviewRepository;
+import group2.cms.repository.*;
 import group2.cms.service.DTO.Paper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +28,9 @@ public class PaperService {
 
     @Autowired
     private ConferenceRepository conferenceRepo;
+
+    @Autowired
+    private PCMemberRepository pcMemberRepo;
 
     public PapersToReviewResponse getPapersForReview(Long userId) {
         var res = new PapersToReviewResponse();
@@ -141,6 +141,18 @@ public class PaperService {
                 papers.remove(index);
                 max--;
             }
+        }
+    }
+
+    public void setPapersToReview(PaperToReviewCountRequest req) {
+        var pm = pcMemberRepo.findById(req.getUserId())
+                .orElseThrow(() -> new InvalidIDException("User with given id not found."));
+
+        pm.setMaxPapersToReview(req.getNoOfPapersToReview());
+        try {
+            pcMemberRepo.save(pm);
+        } catch (Exception e) {
+            throw new ServerException(e.getMessage());
         }
     }
 }
