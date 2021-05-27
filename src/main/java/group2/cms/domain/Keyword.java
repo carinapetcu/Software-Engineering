@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(
         uniqueConstraints = @UniqueConstraint(columnNames = {"keyword"})
 )
-public class Keyword extends BaseEntity<Long>{
+public class Keyword extends BaseEntity<Long> {
     private String keyword;
 
     @ManyToMany(targetEntity = Paper.class)

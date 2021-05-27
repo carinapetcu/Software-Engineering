@@ -12,7 +12,6 @@ import javax.persistence.InheritanceType;
 @AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
-//@ToString(callSuper = true)
 public class CMSUser extends BaseEntity<Long> {
     private String fullName;
     private String email;

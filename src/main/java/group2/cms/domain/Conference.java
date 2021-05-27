@@ -14,8 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-// @ToString
-public class Conference extends BaseEntity<Long>{
+public class Conference extends BaseEntity<Long> {
 
     private String name;
     private String edition;
@@ -27,13 +26,12 @@ public class Conference extends BaseEntity<Long>{
     @PrimaryKeyJoinColumn
     private PCMember chair;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<PCMember> coChairs;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<PCMember> pcMembers;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Section> sections;
-    //private List<Date> deadlines; TODO: figure out how to represent this
 }

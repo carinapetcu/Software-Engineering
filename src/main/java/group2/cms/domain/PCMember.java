@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 public class PCMember extends BaseEntity<Long> {
     private String affiliation;
