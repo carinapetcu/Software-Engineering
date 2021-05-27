@@ -1,14 +1,17 @@
 package group2.cms.service.DTO;
 
-import lombok.Data;
+import group2.cms.domain.PCMember;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
-@Data
-@EqualsAndHashCode
+@Builder(toBuilder = true)
+@EqualsAndHashCode(callSuper = false)
 @ToString
-public class PCMemberRequest {
-    private Long userID;
-    private String affiliation;
-    private String website;
+@Getter
+public class PCMemberRequest extends EntityDTO<PCMember> {
+    private final String email;
+    private final String affiliation;
+    private final String website;
 }

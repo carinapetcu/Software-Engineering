@@ -1,11 +1,12 @@
 package group2.cms.controller;
 
+import group2.cms.exceptions.InvalidCredentialsException;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.exceptions.ServerException;
 import group2.cms.exceptions.ValidationException;
 import group2.cms.service.ConferenceService;
 import group2.cms.service.DTO.Conference.ConferenceRequest;
-import group2.cms.service.DTO.Conference.ConferenceResponse;
+import group2.cms.service.DTO.PCMemberRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -102,7 +103,7 @@ public class ConferenceController {
     }
 
     @GetMapping("/conference/{id}/reviewers")
-    public ResponseEntity<?> getReviewersOfConferene(@PathVariable Long id) {
+    public ResponseEntity<?> getReviewersOfConference(@PathVariable Long id) {
         try {
             var res = service.getReviewersFromConference(id);
 
@@ -147,6 +148,43 @@ public class ConferenceController {
                     HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
+    }
 
+    @PostMapping("/conference/{id}/co_chair")
+    public ResponseEntity<?> addCoChairToConference(@PathVariable Long id, @RequestBody PCMemberRequest req) {
+        try {
+            service.addCoChairToConference(id, req);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (InvalidIDException | InvalidCredentialsException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND
+            );
+
+        } catch (ServerException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    @PostMapping("/conference/{id}/pc_member")
+    public ResponseEntity<?> addPCMemberToConference(@PathVariable Long id, @RequestBody PCMemberRequest req) {
+        try {
+            service.addPCMemberToConference(id, req);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (InvalidIDException | InvalidCredentialsException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND
+            );
+
+        } catch (ServerException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
     }
 }

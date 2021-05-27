@@ -1,9 +1,7 @@
 package group2.cms.service;
 
-import group2.cms.domain.Author;
-import group2.cms.domain.Authority;
-import group2.cms.domain.Conference;
-import group2.cms.domain.PCMember;
+import group2.cms.domain.*;
+import group2.cms.exceptions.InvalidCredentialsException;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.exceptions.ServerException;
 import group2.cms.repository.*;
@@ -14,8 +12,8 @@ import group2.cms.service.DTO.Conference.ConferenceResponse;
 import group2.cms.service.DTO.Conference.ConferencesResponse;
 import group2.cms.service.DTO.PCMember.PCMemberResponse;
 import group2.cms.service.DTO.PCMember.PCMembersResponse;
+import group2.cms.service.DTO.PCMemberRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -46,8 +44,7 @@ public class ConferenceService {
         newConference.setStartDate(data.getStartDate());
         newConference.setEndDate(data.getEndDate());
 
-        var user = userRepo.findById(data.getUserId())
-                .orElseThrow(() -> new InvalidIDException("User does not exist."));
+        var user = getUserById(data.getUserId());
         user.setAuthority(Authority.Chair);
         var author = new Author();
         author.setUser(user);
@@ -68,9 +65,7 @@ public class ConferenceService {
 
 
     public ConferenceResponse getById(Long conferenceID) {
-        var conference = conferenceRepo.findById(conferenceID).orElseThrow(
-                () -> new InvalidIDException("Invalid conference ID: " + conferenceID)
-        );
+        var conference = getConferenceById(conferenceID);
         return ConferenceResponse.builder()
                 .id(conferenceID)
                 .edition(conference.getEdition())
@@ -102,9 +97,7 @@ public class ConferenceService {
     }
 
     public CoChairsResponse getCoChairsFromConference(Long conferenceId) {
-        var conference = conferenceRepo.findById(conferenceId).orElseThrow(
-                () -> new InvalidIDException("Invalid conference ID: " + conferenceId)
-        );
+        var conference = getConferenceById(conferenceId);
         var coChairs = new CoChairsResponse();
 
         conference.getCoChairs()
@@ -123,9 +116,7 @@ public class ConferenceService {
     }
 
     public PCMembersResponse getPCMembersFromConference(Long conferenceId) {
-        var conference = conferenceRepo.findById(conferenceId).orElseThrow(
-                () -> new InvalidIDException("Invalid conference ID: " + conferenceId)
-        );
+        var conference = getConferenceById(conferenceId);
 
         var pcMembers = new PCMembersResponse();
         conference.getPcMembers()
@@ -178,5 +169,74 @@ public class ConferenceService {
                             .build());
                 });
         return pcMembers;
+    }
+
+
+    public void addCoChairToConference(Long id, PCMemberRequest req) {
+        var conference = getConferenceById(id);
+
+        var user = getUserByEmail(req.getEmail());
+
+        var coChair = createPcMember(user, req, Authority.CoChair);
+
+        if (conference.getCoChairs() == null) {
+            conference.setCoChairs(new HashSet<>());
+        }
+        conference.getCoChairs().add(coChair);
+        try {
+            conferenceRepo.save(conference);
+        } catch (Exception e) {
+            throw new ServerException(e.getMessage());
+        }
+    }
+
+    public void addPCMemberToConference(Long id, PCMemberRequest req) {
+        var conference = getConferenceById(id);
+
+        var user = getUserByEmail(req.getEmail());
+
+        var pcMember = createPcMember(user, req, Authority.PCMember);
+        if (conference.getPcMembers() == null) {
+            conference.setPcMembers(new HashSet<>());
+        }
+        conference.getPcMembers().add(pcMember);
+        try {
+            conferenceRepo.save(conference);
+        } catch (Exception e) {
+            throw new ServerException(e.getMessage());
+        }
+    }
+
+    private Conference getConferenceById(Long id) {
+        return conferenceRepo.findById(id).orElseThrow(
+                () -> new InvalidIDException("Invalid conference ID: " + id)
+        );
+    }
+
+    private CMSUser getUserByEmail(String email) {
+        return userRepo.findByEmail(email)
+                .orElseThrow(
+                        () -> new InvalidCredentialsException("User with given email not found.")
+                );
+    }
+
+    private CMSUser getUserById(Long userId) {
+        return userRepo.findById(userId)
+                .orElseThrow(
+                        () -> new InvalidIDException("Invalid ID: " + userId)
+                );
+    }
+
+    private PCMember createPcMember(CMSUser user, PCMemberRequest req, Authority authority) {
+        var author = new Author();
+        author.setUser(user);
+        var pcMember = new PCMember();
+        pcMember.setAffiliation(req.getAffiliation());
+        pcMember.setAuthor(author);
+        pcMember.setMaxPapersToReview(0);
+        pcMember.setWebPage(req.getWebsite());
+        user.setAuthority(authority);
+
+        return pcMember;
     }
 }
