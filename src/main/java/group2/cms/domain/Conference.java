@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -27,6 +24,7 @@ public class Conference extends BaseEntity<Long>{
     private String description; // TODO: check how string is put into SQL
 
     @OneToOne
+    @PrimaryKeyJoinColumn
     private PCMember chair;
 
     @OneToMany

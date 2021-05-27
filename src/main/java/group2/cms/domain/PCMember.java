@@ -2,10 +2,7 @@ package group2.cms.domain;
 
 import lombok.*;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -17,7 +14,9 @@ public class PCMember extends BaseEntity<Long> {
     private String affiliation;
     private String webPage;
     private int maxPapersToReview = 0;
+
     @OneToOne
+    @PrimaryKeyJoinColumn
     private Author author;
 
     public PCMember(Author author, String affiliation) {

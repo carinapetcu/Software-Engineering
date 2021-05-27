@@ -17,6 +17,7 @@ public class Author extends BaseEntity<Long> {
     protected Paper paper;
 
     @OneToOne
+    @PrimaryKeyJoinColumn
     private CMSUser user;
 
     public Author(CMSUser user) {

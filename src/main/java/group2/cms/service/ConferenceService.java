@@ -7,6 +7,7 @@ import group2.cms.domain.PCMember;
 import group2.cms.exceptions.InvalidIDException;
 import group2.cms.exceptions.ServerException;
 import group2.cms.repository.ConferenceRepository;
+import group2.cms.repository.PCMemberRepository;
 import group2.cms.repository.PaperRepository;
 import group2.cms.repository.UserRepository;
 import group2.cms.service.DTO.CoChair.CoChairResponse;
