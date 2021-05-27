@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -38,6 +35,27 @@ public class UserController {
             return new ResponseEntity<>(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST
+            );
+        } catch (ServerException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    @GetMapping("/user/{id}/email")
+    public ResponseEntity<?> getEmailOfUser(@PathVariable Long id){
+        try{
+            var email = service.getEmailOfUser(id);
+            return new ResponseEntity<>(
+                    email,
+                    HttpStatus.OK
+            );
+        }catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND
             );
         } catch (ServerException e) {
             return new ResponseEntity<>(

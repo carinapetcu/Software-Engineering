@@ -3,6 +3,7 @@ package group2.cms.service;
 import group2.cms.domain.Conference;
 import group2.cms.exceptions.CredentialsAlreadyInUseException;
 import group2.cms.exceptions.InvalidCredentialsException;
+import group2.cms.exceptions.InvalidIDException;
 import group2.cms.exceptions.ServerException;
 import group2.cms.repository.ConferenceRepository;
 import group2.cms.repository.UserRepository;
@@ -37,6 +38,12 @@ public class UserService {
             }
         }
         return null;
+    }
+
+    public String getEmailOfUser(Long userId){
+        var user = userRepo.findById(userId)
+                .orElseThrow(() -> new InvalidIDException("User with given id does not exist."));
+        return user.getEmail();
     }
 
     public LoginResponse login(LoginRequest data) {
